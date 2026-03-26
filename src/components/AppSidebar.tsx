@@ -1,21 +1,30 @@
-import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Plus, Zap } from "lucide-react";
+import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Zap, Sparkles, PlusCircle, ChevronDown } from "lucide-react";
 import { pillarLabels, pillarColors, type ContentPillar } from "@/lib/content-data";
+import { type ClientProfile } from "@/lib/client-data";
+import { useState } from "react";
 
 interface SidebarProps {
   activeView: string;
   onViewChange: (view: string) => void;
+  clients: ClientProfile[];
+  selectedClient: ClientProfile | null;
+  onSelectClient: (client: ClientProfile) => void;
+  onNewClient: () => void;
 }
 
 const navItems = [
   { id: "calendar", label: "Calendário", icon: CalendarDays },
   { id: "board", label: "Quadro", icon: LayoutGrid },
+  { id: "ai", label: "Sugestões IA", icon: Sparkles },
   { id: "ideas", label: "Ideias", icon: Lightbulb },
   { id: "analytics", label: "Métricas", icon: BarChart3 },
 ];
 
 const pillars: ContentPillar[] = ["educativo", "autoridade", "engajamento", "vendas", "bastidores"];
 
-const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
+const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelectClient, onNewClient }: SidebarProps) => {
+  const [clientDropdownOpen, setClientDropdownOpen] = useState(false);
+
   return (
     <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border">
       {/* Brand */}
@@ -28,6 +37,46 @@ const AppSidebar = ({ activeView, onViewChange }: SidebarProps) => {
             <h1 className="font-heading text-lg text-sidebar-accent-foreground leading-none">ContentFlow</h1>
             <p className="text-xs text-sidebar-foreground mt-0.5">Planejamento Estratégico</p>
           </div>
+        </div>
+      </div>
+
+      {/* Client Selector */}
+      <div className="p-4 border-b border-sidebar-border">
+        <p className="text-[10px] uppercase tracking-widest text-sidebar-foreground/50 mb-2 px-1">Cliente</p>
+        <div className="relative">
+          <button
+            onClick={() => setClientDropdownOpen(!clientDropdownOpen)}
+            className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-sidebar-accent text-sidebar-accent-foreground text-sm font-medium transition-colors hover:bg-sidebar-accent/80"
+          >
+            <span className="truncate">{selectedClient?.name || "Selecionar cliente"}</span>
+            <ChevronDown className={`w-4 h-4 transition-transform ${clientDropdownOpen ? "rotate-180" : ""}`} />
+          </button>
+
+          {clientDropdownOpen && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-sidebar-accent rounded-lg border border-sidebar-border shadow-xl z-20 overflow-hidden">
+              {clients.map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => { onSelectClient(c); setClientDropdownOpen(false); }}
+                  className={`w-full text-left px-3 py-2.5 text-sm transition-colors ${
+                    selectedClient?.id === c.id
+                      ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                      : "text-sidebar-accent-foreground hover:bg-sidebar-border"
+                  }`}
+                >
+                  <span className="font-medium">{c.name}</span>
+                  <span className="block text-[10px] opacity-70">{c.area}</span>
+                </button>
+              ))}
+              <button
+                onClick={() => { onNewClient(); setClientDropdownOpen(false); }}
+                className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-sidebar-primary hover:bg-sidebar-border transition-colors border-t border-sidebar-border"
+              >
+                <PlusCircle className="w-4 h-4" />
+                Novo Dashboard
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

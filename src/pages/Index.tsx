@@ -3,14 +3,32 @@ import AppSidebar from "@/components/AppSidebar";
 import ContentCalendar from "@/components/ContentCalendar";
 import MetricsBar from "@/components/MetricsBar";
 import ContentBoard from "@/components/ContentBoard";
+import AISuggestions from "@/components/AISuggestions";
+import NewClientModal from "@/components/NewClientModal";
+import { sampleClients, type ClientProfile } from "@/lib/client-data";
 import { Plus, Search } from "lucide-react";
 
 const Index = () => {
   const [activeView, setActiveView] = useState("calendar");
+  const [clients, setClients] = useState<ClientProfile[]>(sampleClients);
+  const [selectedClient, setSelectedClient] = useState<ClientProfile>(sampleClients[0]);
+  const [showNewClient, setShowNewClient] = useState(false);
+
+  const handleNewClient = (client: ClientProfile) => {
+    setClients((prev) => [...prev, client]);
+    setSelectedClient(client);
+  };
 
   return (
     <div className="flex min-h-screen bg-background">
-      <AppSidebar activeView={activeView} onViewChange={setActiveView} />
+      <AppSidebar
+        activeView={activeView}
+        onViewChange={setActiveView}
+        clients={clients}
+        selectedClient={selectedClient}
+        onSelectClient={setSelectedClient}
+        onNewClient={() => setShowNewClient(true)}
+      />
 
       <main className="flex-1 overflow-auto">
         {/* Top Bar */}
@@ -37,6 +55,7 @@ const Index = () => {
 
           {activeView === "calendar" && <ContentCalendar />}
           {activeView === "board" && <ContentBoard />}
+          {activeView === "ai" && selectedClient && <AISuggestions client={selectedClient} />}
           {activeView === "ideas" && (
             <div className="text-center py-20">
               <h2 className="font-heading text-2xl text-foreground mb-2">Banco de Ideias</h2>
@@ -51,6 +70,8 @@ const Index = () => {
           )}
         </div>
       </main>
+
+      <NewClientModal isOpen={showNewClient} onClose={() => setShowNewClient(false)} onSave={handleNewClient} />
     </div>
   );
 };
