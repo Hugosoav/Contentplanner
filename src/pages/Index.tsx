@@ -1,16 +1,58 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import AppSidebar from "@/components/AppSidebar";
+import ContentCalendar from "@/components/ContentCalendar";
+import MetricsBar from "@/components/MetricsBar";
+import ContentBoard from "@/components/ContentBoard";
+import { Plus, Search } from "lucide-react";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const [activeView, setActiveView] = useState("calendar");
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="flex min-h-screen bg-background">
+      <AppSidebar activeView={activeView} onViewChange={setActiveView} />
+
+      <main className="flex-1 overflow-auto">
+        {/* Top Bar */}
+        <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="relative">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Buscar conteúdos..."
+                className="pl-10 pr-4 py-2 rounded-lg bg-secondary border-0 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 w-72"
+              />
+            </div>
+            <button className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-accent/90 transition-colors shadow-sm">
+              <Plus className="w-4 h-4" />
+              Novo Conteúdo
+            </button>
+          </div>
+        </header>
+
+        {/* Content */}
+        <div className="p-8">
+          <MetricsBar />
+
+          {activeView === "calendar" && <ContentCalendar />}
+          {activeView === "board" && <ContentBoard />}
+          {activeView === "ideas" && (
+            <div className="text-center py-20">
+              <h2 className="font-heading text-2xl text-foreground mb-2">Banco de Ideias</h2>
+              <p className="text-muted-foreground text-sm">Capture e organize suas ideias de conteúdo aqui.</p>
+            </div>
+          )}
+          {activeView === "analytics" && (
+            <div className="text-center py-20">
+              <h2 className="font-heading text-2xl text-foreground mb-2">Métricas e Relatórios</h2>
+              <p className="text-muted-foreground text-sm">Acompanhe o desempenho do seu conteúdo.</p>
+            </div>
+          )}
+        </div>
+      </main>
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
