@@ -2,7 +2,7 @@ import { useState } from "react";
 import { type ClientProfile } from "@/lib/client-data";
 import { type ContentItem } from "@/lib/content-data";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, Loader2, Calendar, Monitor, Lightbulb, Plus } from "lucide-react";
+import { Sparkles, Loader2, Calendar, Monitor, Lightbulb, Plus, BookmarkPlus } from "lucide-react";
 import { toast } from "sonner";
 
 interface AISuggestionsProps {
@@ -11,6 +11,7 @@ interface AISuggestionsProps {
   onSuggestionsChange: (suggestions: Suggestion[]) => void;
   existingContent: ContentItem[];
   onAddToCalendar: (item: ContentItem) => void;
+  onMoveToIdeas: (suggestion: Suggestion) => void;
 }
 
 export interface Suggestion {
@@ -31,7 +32,7 @@ const pillarColorMap: Record<string, string> = {
   bastidores: "bg-muted text-muted-foreground",
 };
 
-const AISuggestions = ({ client, suggestions, onSuggestionsChange, existingContent, onAddToCalendar }: AISuggestionsProps) => {
+const AISuggestions = ({ client, suggestions, onSuggestionsChange, existingContent, onAddToCalendar, onMoveToIdeas }: AISuggestionsProps) => {
   const [loading, setLoading] = useState(false);
 
   const generateSuggestions = async () => {
@@ -137,6 +138,13 @@ const AISuggestions = ({ client, suggestions, onSuggestionsChange, existingConte
                 </span>
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] bg-secondary text-secondary-foreground px-2 py-0.5 rounded font-medium">{s.format}</span>
+                  <button
+                    onClick={() => onMoveToIdeas(s)}
+                    className="text-muted-foreground hover:text-warning transition-colors"
+                    title="Mover para Ideias"
+                  >
+                    <BookmarkPlus className="w-4 h-4" />
+                  </button>
                   <button
                     onClick={() => handleAddToCalendar(s)}
                     className="text-muted-foreground hover:text-accent transition-colors"

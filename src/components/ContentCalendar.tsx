@@ -1,6 +1,9 @@
 import { type ContentItem } from "@/lib/content-data";
-import { ChevronLeft, ChevronRight, Pencil, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pencil, Trash2, CalendarIcon } from "lucide-react";
 import { useState, useMemo } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 
 const DAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 const MONTHS = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -9,9 +12,10 @@ interface ContentCalendarProps {
   items: ContentItem[];
   onEdit: (item: ContentItem) => void;
   onDelete: (id: string) => void;
+  onMove: (id: string, newDate: string) => void;
 }
 
-const ContentCalendar = ({ items, onEdit, onDelete }: ContentCalendarProps) => {
+const ContentCalendar = ({ items, onEdit, onDelete, onMove }: ContentCalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 1));
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
 
@@ -66,6 +70,26 @@ const ContentCalendar = ({ items, onEdit, onDelete }: ContentCalendarProps) => {
             >
               <span className="truncate">{item.title}</span>
               <span className="hidden group-hover/item:flex items-center gap-0.5 shrink-0">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button onClick={(e) => e.stopPropagation()} className="hover:text-foreground" title="Mover data">
+                      <CalendarIcon className="w-2.5 h-2.5" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={new Date(item.date + "T12:00:00")}
+                      onSelect={(d) => {
+                        if (d) {
+                          const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+                          onMove(item.id, iso);
+                        }
+                      }}
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
                 <button onClick={(e) => { e.stopPropagation(); onEdit(item); }} className="hover:text-foreground">
                   <Pencil className="w-2.5 h-2.5" />
                 </button>
