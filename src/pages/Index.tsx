@@ -72,6 +72,22 @@ const Index = () => {
     toast.success("Conteúdo removido.");
   };
 
+  const handleMoveContent = (id: string, newDate: string) => {
+    setContentByClient((prev) => ({
+      ...prev,
+      [clientId]: (prev[clientId] || []).map((i) => i.id === id ? { ...i, date: newDate } : i),
+    }));
+    toast.success("Conteúdo movido!");
+  };
+
+  const handleMoveToIdeas = (suggestion: Suggestion) => {
+    setIdeasByClient((prev) => ({
+      ...prev,
+      [clientId]: [...(prev[clientId] || []), suggestion],
+    }));
+    toast.success("Sugestão movida para Ideias!");
+  };
+
   const handleEditContent = (item: ContentItem) => {
     setEditingContent(item);
     setShowContentModal(true);
