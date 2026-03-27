@@ -139,6 +139,13 @@ const AISuggestions = ({ client, suggestions, onSuggestionsChange, existingConte
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] bg-secondary text-secondary-foreground px-2 py-0.5 rounded font-medium">{s.format}</span>
                   <button
+                    onClick={() => onMoveToIdeas(s)}
+                    className="text-muted-foreground hover:text-warning transition-colors"
+                    title="Mover para Ideias"
+                  >
+                    <BookmarkPlus className="w-4 h-4" />
+                  </button>
+                  <button
                     onClick={() => handleAddToCalendar(s)}
                     className="text-muted-foreground hover:text-accent transition-colors"
                     title="Adicionar ao calendário"
