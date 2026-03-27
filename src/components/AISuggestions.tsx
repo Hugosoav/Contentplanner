@@ -2,7 +2,7 @@ import { useState } from "react";
 import { type ClientProfile } from "@/lib/client-data";
 import { type ContentItem } from "@/lib/content-data";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, Loader2, Calendar, Monitor, Lightbulb, Plus } from "lucide-react";
+import { Sparkles, Loader2, Calendar, Monitor, Lightbulb, Plus, BookmarkPlus } from "lucide-react";
 import { toast } from "sonner";
 
 interface AISuggestionsProps {
