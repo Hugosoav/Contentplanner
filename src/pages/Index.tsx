@@ -153,6 +153,7 @@ const Index = () => {
               onSuggestionsChange={handleSuggestionsChange}
               existingContent={currentItems}
               onAddToCalendar={handleAddFromAI}
+              onMoveToIdeas={handleMoveToIdeas}
             />
           )}
           {activeView === "ideas" && (
