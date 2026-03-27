@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { type ClientProfile } from "@/lib/client-data";
+import { type ContentItem } from "@/lib/content-data";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, Loader2, Calendar, Tag, Monitor, Lightbulb } from "lucide-react";
+import { Sparkles, Loader2, Calendar, Monitor, Lightbulb, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 interface AISuggestionsProps {
   client: ClientProfile;
+  suggestions: Suggestion[];
+  onSuggestionsChange: (suggestions: Suggestion[]) => void;
+  existingContent: ContentItem[];
+  onAddToCalendar: (item: ContentItem) => void;
 }
 
-interface Suggestion {
+export interface Suggestion {
   title: string;
   description: string;
   pillar: string;
@@ -26,8 +31,7 @@ const pillarColorMap: Record<string, string> = {
   bastidores: "bg-muted text-muted-foreground",
 };
 
-const AISuggestions = ({ client }: AISuggestionsProps) => {
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+const AISuggestions = ({ client, suggestions, onSuggestionsChange, existingContent, onAddToCalendar }: AISuggestionsProps) => {
   const [loading, setLoading] = useState(false);
 
   const generateSuggestions = async () => {
@@ -36,21 +40,41 @@ const AISuggestions = ({ client }: AISuggestionsProps) => {
       const now = new Date();
       const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 
+      // Pass existing content + previous suggestions to avoid repeats
+      const allExisting = [
+        ...existingContent.map((c) => ({ title: c.title, description: c.description })),
+        ...suggestions.map((s) => ({ title: s.title, description: s.description })),
+      ];
+
       const { data, error } = await supabase.functions.invoke("suggest-content", {
-        body: { clientProfile: client, month, existingContent: [] },
+        body: { clientProfile: client, month, existingContent: allExisting },
       });
 
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
 
-      setSuggestions(data.suggestions || []);
-      toast.success(`${data.suggestions?.length || 0} sugestões geradas!`);
+      const newSuggestions = data.suggestions || [];
+      onSuggestionsChange([...suggestions, ...newSuggestions]);
+      toast.success(`${newSuggestions.length} sugestões geradas!`);
     } catch (e: any) {
       console.error(e);
       toast.error(e.message || "Erro ao gerar sugestões");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddToCalendar = (s: Suggestion) => {
+    onAddToCalendar({
+      id: crypto.randomUUID(),
+      title: s.title,
+      description: s.description,
+      status: "scheduled",
+      pillar: s.pillar as any,
+      platform: s.platform as any,
+      date: s.suggestedDate,
+    });
+    toast.success("Conteúdo adicionado ao calendário!");
   };
 
   return (
@@ -69,7 +93,6 @@ const AISuggestions = ({ client }: AISuggestionsProps) => {
         </button>
       </div>
 
-      {/* Client profile summary */}
       <div className="bg-card rounded-xl border border-border p-5 mb-6 grid grid-cols-2 gap-4">
         <div>
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">Área</p>
@@ -89,7 +112,6 @@ const AISuggestions = ({ client }: AISuggestionsProps) => {
         </div>
       </div>
 
-      {/* Suggestions */}
       {suggestions.length === 0 && !loading && (
         <div className="text-center py-16 border border-dashed border-border rounded-xl">
           <Sparkles className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
@@ -113,7 +135,16 @@ const AISuggestions = ({ client }: AISuggestionsProps) => {
                 <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide ${pillarColorMap[s.pillar] || "bg-muted text-muted-foreground"}`}>
                   {s.pillar}
                 </span>
-                <span className="text-[10px] bg-secondary text-secondary-foreground px-2 py-0.5 rounded font-medium">{s.format}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] bg-secondary text-secondary-foreground px-2 py-0.5 rounded font-medium">{s.format}</span>
+                  <button
+                    onClick={() => handleAddToCalendar(s)}
+                    className="text-muted-foreground hover:text-accent transition-colors"
+                    title="Adicionar ao calendário"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
 
               <h3 className="font-semibold text-card-foreground text-sm mb-1.5 leading-snug">{s.title}</h3>
