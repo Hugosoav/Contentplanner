@@ -157,9 +157,30 @@ const Index = () => {
             />
           )}
           {activeView === "ideas" && (
-            <div className="text-center py-20">
-              <h2 className="font-heading text-2xl text-foreground mb-2">Banco de Ideias</h2>
-              <p className="text-muted-foreground text-sm">Capture e organize suas ideias de conteúdo aqui.</p>
+            <div className="space-y-6">
+              <div>
+                <h2 className="font-heading text-2xl text-foreground">Banco de Ideias</h2>
+                <p className="text-sm text-muted-foreground mt-1">{currentIdeas.length} ideias salvas</p>
+              </div>
+              {currentIdeas.length === 0 ? (
+                <div className="text-center py-20 border border-dashed border-border rounded-xl">
+                  <p className="text-muted-foreground text-sm">Mova sugestões da IA para cá usando o botão de lâmpada.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  {currentIdeas.map((s, i) => (
+                    <div key={i} className="bg-card rounded-xl border border-border p-5">
+                      <div className="flex items-start justify-between mb-2">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-accent/10 text-accent">{s.pillar}</span>
+                        <span className="text-[10px] bg-secondary text-secondary-foreground px-2 py-0.5 rounded font-medium">{s.format}</span>
+                      </div>
+                      <h3 className="font-semibold text-card-foreground text-sm mb-1.5">{s.title}</h3>
+                      <p className="text-xs text-muted-foreground mb-2">{s.description}</p>
+                      <p className="text-xs text-muted-foreground italic">"{s.hook}"</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
           {activeView === "analytics" && (
