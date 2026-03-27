@@ -70,6 +70,26 @@ const ContentCalendar = ({ items, onEdit, onDelete, onMove }: ContentCalendarPro
             >
               <span className="truncate">{item.title}</span>
               <span className="hidden group-hover/item:flex items-center gap-0.5 shrink-0">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button onClick={(e) => e.stopPropagation()} className="hover:text-foreground" title="Mover data">
+                      <CalendarIcon className="w-2.5 h-2.5" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={new Date(item.date + "T12:00:00")}
+                      onSelect={(d) => {
+                        if (d) {
+                          const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+                          onMove(item.id, iso);
+                        }
+                      }}
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
                 <button onClick={(e) => { e.stopPropagation(); onEdit(item); }} className="hover:text-foreground">
                   <Pencil className="w-2.5 h-2.5" />
                 </button>
