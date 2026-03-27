@@ -11,6 +11,7 @@ interface AISuggestionsProps {
   onSuggestionsChange: (suggestions: Suggestion[]) => void;
   existingContent: ContentItem[];
   onAddToCalendar: (item: ContentItem) => void;
+  onMoveToIdeas: (suggestion: Suggestion) => void;
 }
 
 export interface Suggestion {
