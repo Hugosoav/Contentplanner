@@ -29,6 +29,7 @@ const Index = () => {
   const clientId = selectedClient?.id || "";
   const currentItems = contentByClient[clientId] || [];
   const currentSuggestions = suggestionsByClient[clientId] || [];
+  const currentIdeas = ideasByClient[clientId] || [];
 
   const handleNewClient = (client: ClientProfile) => {
     setClients((prev) => [...prev, client]);
