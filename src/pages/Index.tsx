@@ -141,7 +141,7 @@ const Index = () => {
           <MetricsBar items={currentItems} />
 
           {activeView === "calendar" && (
-            <ContentCalendar items={currentItems} onEdit={handleEditContent} onDelete={handleDeleteContent} />
+            <ContentCalendar items={currentItems} onEdit={handleEditContent} onDelete={handleDeleteContent} onMove={handleMoveContent} />
           )}
           {activeView === "board" && (
             <ContentBoard items={currentItems} onEdit={handleEditContent} onDelete={handleDeleteContent} />
