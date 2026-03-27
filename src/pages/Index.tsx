@@ -19,8 +19,8 @@ const Index = () => {
 
   // Content state per client
   const [contentByClient, setContentByClient] = useState<Record<string, ContentItem[]>>({});
-  // AI suggestions per client
   const [suggestionsByClient, setSuggestionsByClient] = useState<Record<string, Suggestion[]>>({});
+  const [ideasByClient, setIdeasByClient] = useState<Record<string, Suggestion[]>>({});
 
   // Content modal
   const [showContentModal, setShowContentModal] = useState(false);
