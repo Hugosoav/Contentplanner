@@ -12,6 +12,7 @@ interface ContentCalendarProps {
   items: ContentItem[];
   onEdit: (item: ContentItem) => void;
   onDelete: (id: string) => void;
+  onMove: (id: string, newDate: string) => void;
 }
 
 const ContentCalendar = ({ items, onEdit, onDelete }: ContentCalendarProps) => {
