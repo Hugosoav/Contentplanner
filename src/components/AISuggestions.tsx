@@ -32,7 +32,7 @@ const pillarColorMap: Record<string, string> = {
   bastidores: "bg-muted text-muted-foreground",
 };
 
-const AISuggestions = ({ client, suggestions, onSuggestionsChange, existingContent, onAddToCalendar }: AISuggestionsProps) => {
+const AISuggestions = ({ client, suggestions, onSuggestionsChange, existingContent, onAddToCalendar, onMoveToIdeas }: AISuggestionsProps) => {
   const [loading, setLoading] = useState(false);
 
   const generateSuggestions = async () => {
