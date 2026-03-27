@@ -15,7 +15,7 @@ interface ContentCalendarProps {
   onMove: (id: string, newDate: string) => void;
 }
 
-const ContentCalendar = ({ items, onEdit, onDelete }: ContentCalendarProps) => {
+const ContentCalendar = ({ items, onEdit, onDelete, onMove }: ContentCalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 1));
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
 
