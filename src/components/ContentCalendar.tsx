@@ -1,13 +1,19 @@
-import { type ContentItem, sampleContent } from "@/lib/content-data";
-import ContentCard from "./ContentCard";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { type ContentItem } from "@/lib/content-data";
+import { ChevronLeft, ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { useState, useMemo } from "react";
 
 const DAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 const MONTHS = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-const ContentCalendar = () => {
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 1)); // March 2026
+interface ContentCalendarProps {
+  items: ContentItem[];
+  onEdit: (item: ContentItem) => void;
+  onDelete: (id: string) => void;
+}
+
+const ContentCalendar = ({ items, onEdit, onDelete }: ContentCalendarProps) => {
+  const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 1));
+  const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -17,13 +23,13 @@ const ContentCalendar = () => {
 
   const contentByDate = useMemo(() => {
     const map: Record<string, ContentItem[]> = {};
-    sampleContent.forEach((item) => {
+    items.forEach((item) => {
       const d = item.date;
       if (!map[d]) map[d] = [];
       map[d].push(item);
     });
     return map;
-  }, []);
+  }, [items]);
 
   const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
   const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
@@ -38,7 +44,7 @@ const ContentCalendar = () => {
   }
   for (let day = 1; day <= daysInMonth; day++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-    const items = contentByDate[dateStr] || [];
+    const dayItems = contentByDate[dateStr] || [];
 
     cells.push(
       <div
@@ -51,13 +57,22 @@ const ContentCalendar = () => {
           {day}
         </span>
         <div className="mt-1 space-y-1">
-          {items.map((item) => (
+          {dayItems.map((item) => (
             <div
               key={item.id}
-              className="text-[10px] bg-secondary rounded px-1.5 py-1 truncate font-medium text-secondary-foreground cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
+              className="group/item text-[10px] bg-secondary rounded px-1.5 py-1 truncate font-medium text-secondary-foreground cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors flex items-center justify-between gap-1"
               title={item.title}
+              onClick={() => setSelectedItem(selectedItem?.id === item.id ? null : item)}
             >
-              {item.title}
+              <span className="truncate">{item.title}</span>
+              <span className="hidden group-hover/item:flex items-center gap-0.5 shrink-0">
+                <button onClick={(e) => { e.stopPropagation(); onEdit(item); }} className="hover:text-foreground">
+                  <Pencil className="w-2.5 h-2.5" />
+                </button>
+                <button onClick={(e) => { e.stopPropagation(); onDelete(item.id); }} className="hover:text-destructive">
+                  <Trash2 className="w-2.5 h-2.5" />
+                </button>
+              </span>
             </div>
           ))}
         </div>
@@ -67,33 +82,25 @@ const ContentCalendar = () => {
 
   return (
     <div>
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="font-heading text-2xl text-foreground">
             {MONTHS[month]} {year}
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            {sampleContent.length} conteúdos planejados
+            {items.length} conteúdos planejados
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={prevMonth}
-            className="p-2 rounded-lg border border-border bg-card hover:bg-secondary transition-colors"
-          >
+          <button onClick={prevMonth} className="p-2 rounded-lg border border-border bg-card hover:bg-secondary transition-colors">
             <ChevronLeft className="w-4 h-4 text-foreground" />
           </button>
-          <button
-            onClick={nextMonth}
-            className="p-2 rounded-lg border border-border bg-card hover:bg-secondary transition-colors"
-          >
+          <button onClick={nextMonth} className="p-2 rounded-lg border border-border bg-card hover:bg-secondary transition-colors">
             <ChevronRight className="w-4 h-4 text-foreground" />
           </button>
         </div>
       </div>
 
-      {/* Day headers */}
       <div className="grid grid-cols-7 gap-2 mb-2">
         {DAYS.map((d) => (
           <div key={d} className="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground text-center py-2">
@@ -102,7 +109,6 @@ const ContentCalendar = () => {
         ))}
       </div>
 
-      {/* Calendar grid */}
       <div className="grid grid-cols-7 gap-2">{cells}</div>
     </div>
   );

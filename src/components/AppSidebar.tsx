@@ -1,4 +1,4 @@
-import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Zap, Sparkles, PlusCircle, ChevronDown } from "lucide-react";
+import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Zap, Sparkles, PlusCircle, ChevronDown, Trash2 } from "lucide-react";
 import { pillarLabels, pillarColors, type ContentPillar } from "@/lib/content-data";
 import { type ClientProfile } from "@/lib/client-data";
 import { useState } from "react";
@@ -10,6 +10,7 @@ interface SidebarProps {
   selectedClient: ClientProfile | null;
   onSelectClient: (client: ClientProfile) => void;
   onNewClient: () => void;
+  onDeleteClient: (id: string) => void;
 }
 
 const navItems = [
@@ -22,8 +23,9 @@ const navItems = [
 
 const pillars: ContentPillar[] = ["educativo", "autoridade", "engajamento", "vendas", "bastidores"];
 
-const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelectClient, onNewClient }: SidebarProps) => {
+const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelectClient, onNewClient, onDeleteClient }: SidebarProps) => {
   const [clientDropdownOpen, setClientDropdownOpen] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
     <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border">
@@ -55,18 +57,29 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
           {clientDropdownOpen && (
             <div className="absolute top-full left-0 right-0 mt-1 bg-sidebar-accent rounded-lg border border-sidebar-border shadow-xl z-20 overflow-hidden">
               {clients.map((c) => (
-                <button
+                <div
                   key={c.id}
-                  onClick={() => { onSelectClient(c); setClientDropdownOpen(false); }}
-                  className={`w-full text-left px-3 py-2.5 text-sm transition-colors ${
+                  className={`flex items-center justify-between transition-colors ${
                     selectedClient?.id === c.id
                       ? "bg-sidebar-primary text-sidebar-primary-foreground"
                       : "text-sidebar-accent-foreground hover:bg-sidebar-border"
                   }`}
                 >
-                  <span className="font-medium">{c.name}</span>
-                  <span className="block text-[10px] opacity-70">{c.area}</span>
-                </button>
+                  <button
+                    onClick={() => { onSelectClient(c); setClientDropdownOpen(false); }}
+                    className="flex-1 text-left px-3 py-2.5 text-sm"
+                  >
+                    <span className="font-medium">{c.name}</span>
+                    <span className="block text-[10px] opacity-70">{c.area}</span>
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onDeleteClient(c.id); setClientDropdownOpen(false); }}
+                    className="px-2 py-2.5 text-muted-foreground hover:text-destructive transition-colors"
+                    title="Remover dashboard"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               ))}
               <button
                 onClick={() => { onNewClient(); setClientDropdownOpen(false); }}
@@ -101,7 +114,6 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
           ))}
         </ul>
 
-        {/* Pillars */}
         <p className="text-[10px] uppercase tracking-widest text-sidebar-foreground/50 mb-3 px-3 mt-8">Pilares</p>
         <ul className="space-y-1">
           {pillars.map((pillar) => (
@@ -113,7 +125,6 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
         </ul>
       </nav>
 
-      {/* Bottom */}
       <div className="p-4 border-t border-sidebar-border">
         <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors">
           <Settings className="w-4 h-4" />
