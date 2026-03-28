@@ -41,18 +41,20 @@ const Index = () => {
   };
 
   const handleDeleteClient = (id: string) => {
-    if (clients.length <= 1) {
-      toast.error("Você precisa ter pelo menos um dashboard.");
-      return;
-    }
     setClients((prev) => prev.filter((c) => c.id !== id));
     setContentByClient((prev) => { const n = { ...prev }; delete n[id]; return n; });
     setSuggestionsByClient((prev) => { const n = { ...prev }; delete n[id]; return n; });
+    setIdeasByClient((prev) => { const n = { ...prev }; delete n[id]; return n; });
     if (selectedClient?.id === id) {
       const remaining = clients.filter((c) => c.id !== id);
-      setSelectedClient(remaining[0]);
+      setSelectedClient(remaining.length > 0 ? remaining[0] : null);
     }
     toast.success("Dashboard removido.");
+  };
+
+  const handleCompleteTutorial = () => {
+    setShowTutorial(false);
+    localStorage.setItem("contentplan_tutorial_done", "true");
   };
 
   const handleSaveContent = (item: ContentItem) => {
