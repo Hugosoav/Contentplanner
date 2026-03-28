@@ -28,6 +28,12 @@ const pillars: ContentPillar[] = ["educativo", "autoridade", "engajamento", "ven
 const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelectClient, onNewClient, onDeleteClient }: SidebarProps) => {
   const [clientDropdownOpen, setClientDropdownOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth", { replace: true });
+  };
 
   return (
     <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border">
