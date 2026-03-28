@@ -133,10 +133,17 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
         </ul>
       </nav>
 
-      <div className="p-4 border-t border-sidebar-border">
+      <div className="p-4 border-t border-sidebar-border space-y-1">
         <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors">
           <Settings className="w-4 h-4" />
           Configurações
+        </button>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground hover:bg-destructive/20 hover:text-destructive transition-colors"
+        >
+          <LogOut className="w-4 h-4" />
+          Sair
         </button>
       </div>
     </aside>
