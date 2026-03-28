@@ -1,4 +1,6 @@
-import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Zap, Sparkles, PlusCircle, ChevronDown, Trash2 } from "lucide-react";
+import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Zap, Sparkles, PlusCircle, ChevronDown, Trash2, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import { pillarLabels, pillarColors, type ContentPillar } from "@/lib/content-data";
 import { type ClientProfile } from "@/lib/client-data";
 import { useState } from "react";
