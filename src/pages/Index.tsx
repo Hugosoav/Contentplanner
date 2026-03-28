@@ -6,16 +6,20 @@ import ContentBoard from "@/components/ContentBoard";
 import AISuggestions, { type Suggestion } from "@/components/AISuggestions";
 import NewClientModal from "@/components/NewClientModal";
 import NewContentModal from "@/components/NewContentModal";
-import { sampleClients, type ClientProfile } from "@/lib/client-data";
+import OnboardingTutorial from "@/components/OnboardingTutorial";
+import { type ClientProfile } from "@/lib/client-data";
 import { type ContentItem } from "@/lib/content-data";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Rocket } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
   const [activeView, setActiveView] = useState("calendar");
-  const [clients, setClients] = useState<ClientProfile[]>(sampleClients);
-  const [selectedClient, setSelectedClient] = useState<ClientProfile>(sampleClients[0]);
+  const [clients, setClients] = useState<ClientProfile[]>([]);
+  const [selectedClient, setSelectedClient] = useState<ClientProfile | null>(null);
   const [showNewClient, setShowNewClient] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(() => {
+    return !localStorage.getItem("contentplan_tutorial_done");
+  });
 
   // Content state per client
   const [contentByClient, setContentByClient] = useState<Record<string, ContentItem[]>>({});
