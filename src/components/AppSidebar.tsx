@@ -1,4 +1,6 @@
-import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Zap, Sparkles, PlusCircle, ChevronDown, Trash2 } from "lucide-react";
+import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Zap, Sparkles, PlusCircle, ChevronDown, Trash2, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import { pillarLabels, pillarColors, type ContentPillar } from "@/lib/content-data";
 import { type ClientProfile } from "@/lib/client-data";
 import { useState } from "react";
@@ -26,6 +28,12 @@ const pillars: ContentPillar[] = ["educativo", "autoridade", "engajamento", "ven
 const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelectClient, onNewClient, onDeleteClient }: SidebarProps) => {
   const [clientDropdownOpen, setClientDropdownOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth", { replace: true });
+  };
 
   return (
     <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border">
@@ -125,10 +133,17 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
         </ul>
       </nav>
 
-      <div className="p-4 border-t border-sidebar-border">
+      <div className="p-4 border-t border-sidebar-border space-y-1">
         <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors">
           <Settings className="w-4 h-4" />
           Configurações
+        </button>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground hover:bg-destructive/20 hover:text-destructive transition-colors"
+        >
+          <LogOut className="w-4 h-4" />
+          Sair
         </button>
       </div>
     </aside>
