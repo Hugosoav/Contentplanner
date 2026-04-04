@@ -9,46 +9,55 @@ import NewContentModal from "@/components/NewContentModal";
 import OnboardingTutorial from "@/components/OnboardingTutorial";
 import { type ClientProfile } from "@/lib/client-data";
 import { type ContentItem } from "@/lib/content-data";
-import { Plus, Search, Rocket } from "lucide-react";
+import { useSupabaseData } from "@/hooks/useSupabaseData";
+import { Plus, Search, Rocket, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
   const [activeView, setActiveView] = useState("calendar");
-  const [clients, setClients] = useState<ClientProfile[]>([]);
-  const [selectedClient, setSelectedClient] = useState<ClientProfile | null>(null);
   const [showNewClient, setShowNewClient] = useState(false);
   const [showTutorial, setShowTutorial] = useState(() => {
     return !localStorage.getItem("contentplan_tutorial_done");
   });
-
-  // Content state per client
-  const [contentByClient, setContentByClient] = useState<Record<string, ContentItem[]>>({});
-  const [suggestionsByClient, setSuggestionsByClient] = useState<Record<string, Suggestion[]>>({});
-  const [ideasByClient, setIdeasByClient] = useState<Record<string, Suggestion[]>>({});
-
-  // Content modal
   const [showContentModal, setShowContentModal] = useState(false);
   const [editingContent, setEditingContent] = useState<ContentItem | null>(null);
+
+  // AI suggestions kept in memory (not persisted)
+  const [suggestionsByClient, setSuggestionsByClient] = useState<Record<string, Suggestion[]>>({});
+
+  const {
+    loading,
+    clients,
+    selectedClient,
+    setSelectedClient,
+    contentByClient,
+    ideasByClient,
+    addClient,
+    deleteClient,
+    saveContent,
+    deleteContent,
+    moveContent,
+    addIdea,
+  } = useSupabaseData();
 
   const clientId = selectedClient?.id || "";
   const currentItems = contentByClient[clientId] || [];
   const currentSuggestions = suggestionsByClient[clientId] || [];
   const currentIdeas = ideasByClient[clientId] || [];
 
-  const handleNewClient = (client: ClientProfile) => {
-    setClients((prev) => [...prev, client]);
-    setSelectedClient(client);
+  const handleNewClient = async (client: ClientProfile) => {
+    try {
+      await addClient(client);
+      toast.success("Dashboard criado!");
+    } catch {
+      toast.error("Erro ao criar dashboard.");
+    }
   };
 
-  const handleDeleteClient = (id: string) => {
-    setClients((prev) => prev.filter((c) => c.id !== id));
-    setContentByClient((prev) => { const n = { ...prev }; delete n[id]; return n; });
-    setSuggestionsByClient((prev) => { const n = { ...prev }; delete n[id]; return n; });
-    setIdeasByClient((prev) => { const n = { ...prev }; delete n[id]; return n; });
-    if (selectedClient?.id === id) {
-      const remaining = clients.filter((c) => c.id !== id);
-      setSelectedClient(remaining.length > 0 ? remaining[0] : null);
-    }
+  const handleDeleteClient = async (id: string) => {
+    await deleteClient(id);
+    const remaining = clients.filter((c) => c.id !== id);
+    setSelectedClient(remaining.length > 0 ? remaining[0] : null);
     toast.success("Dashboard removido.");
   };
 
@@ -57,40 +66,28 @@ const Index = () => {
     localStorage.setItem("contentplan_tutorial_done", "true");
   };
 
-  const handleSaveContent = (item: ContentItem) => {
-    setContentByClient((prev) => {
-      const items = prev[clientId] || [];
-      const exists = items.find((i) => i.id === item.id);
-      if (exists) {
-        return { ...prev, [clientId]: items.map((i) => (i.id === item.id ? item : i)) };
-      }
-      return { ...prev, [clientId]: [...items, item] };
-    });
-    setEditingContent(null);
-    toast.success(editingContent ? "Conteúdo atualizado!" : "Conteúdo criado!");
+  const handleSaveContent = async (item: ContentItem) => {
+    try {
+      await saveContent(clientId, item, !!editingContent);
+      setEditingContent(null);
+      toast.success(editingContent ? "Conteúdo atualizado!" : "Conteúdo criado!");
+    } catch {
+      toast.error("Erro ao salvar conteúdo.");
+    }
   };
 
-  const handleDeleteContent = (id: string) => {
-    setContentByClient((prev) => ({
-      ...prev,
-      [clientId]: (prev[clientId] || []).filter((i) => i.id !== id),
-    }));
+  const handleDeleteContent = async (id: string) => {
+    await deleteContent(clientId, id);
     toast.success("Conteúdo removido.");
   };
 
-  const handleMoveContent = (id: string, newDate: string) => {
-    setContentByClient((prev) => ({
-      ...prev,
-      [clientId]: (prev[clientId] || []).map((i) => i.id === id ? { ...i, date: newDate } : i),
-    }));
+  const handleMoveContent = async (id: string, newDate: string) => {
+    await moveContent(clientId, id, newDate);
     toast.success("Conteúdo movido!");
   };
 
-  const handleMoveToIdeas = (suggestion: Suggestion) => {
-    setIdeasByClient((prev) => ({
-      ...prev,
-      [clientId]: [...(prev[clientId] || []), suggestion],
-    }));
+  const handleMoveToIdeas = async (suggestion: Suggestion) => {
+    await addIdea(clientId, suggestion);
     toast.success("Sugestão movida para Ideias!");
   };
 
@@ -99,11 +96,13 @@ const Index = () => {
     setShowContentModal(true);
   };
 
-  const handleAddFromAI = (item: ContentItem) => {
-    setContentByClient((prev) => ({
-      ...prev,
-      [clientId]: [...(prev[clientId] || []), item],
-    }));
+  const handleAddFromAI = async (item: ContentItem) => {
+    try {
+      await saveContent(clientId, item, false);
+      toast.success("Conteúdo adicionado ao calendário!");
+    } catch {
+      toast.error("Erro ao adicionar conteúdo.");
+    }
   };
 
   const handleSuggestionsChange = (newSuggestions: Suggestion[]) => {
@@ -111,6 +110,14 @@ const Index = () => {
   };
 
   const noClients = clients.length === 0;
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-accent" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -144,9 +151,7 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => {
-                  setShowTutorial(true);
-                }}
+                onClick={() => setShowTutorial(true)}
                 className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors"
               >
                 <Rocket className="w-4 h-4" />
