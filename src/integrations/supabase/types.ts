@@ -14,6 +14,136 @@ export type Database = {
   }
   public: {
     Tables: {
+      clients: {
+        Row: {
+          area: string
+          audience: string
+          created_at: string
+          id: string
+          name: string
+          objectives: string
+          platforms: string[]
+          tone: string
+          user_id: string
+        }
+        Insert: {
+          area?: string
+          audience?: string
+          created_at?: string
+          id?: string
+          name: string
+          objectives?: string
+          platforms?: string[]
+          tone?: string
+          user_id: string
+        }
+        Update: {
+          area?: string
+          audience?: string
+          created_at?: string
+          id?: string
+          name?: string
+          objectives?: string
+          platforms?: string[]
+          tone?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      content_items: {
+        Row: {
+          client_id: string
+          created_at: string
+          date: string
+          description: string
+          id: string
+          pillar: string
+          platform: string
+          status: string
+          time: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          date?: string
+          description?: string
+          id?: string
+          pillar?: string
+          platform?: string
+          status?: string
+          time?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          date?: string
+          description?: string
+          id?: string
+          pillar?: string
+          platform?: string
+          status?: string
+          time?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_items_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ideas: {
+        Row: {
+          client_id: string
+          created_at: string
+          description: string
+          format: string
+          hook: string
+          id: string
+          pillar: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          description?: string
+          format?: string
+          hook?: string
+          id?: string
+          pillar?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          description?: string
+          format?: string
+          hook?: string
+          id?: string
+          pillar?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ideas_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
