@@ -9,7 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { Loader2, LayoutDashboard } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import sincroLogo from "@/assets/sincro-logo.png";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -89,13 +90,8 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-2">
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-accent flex items-center justify-center">
-              <LayoutDashboard className="h-5 w-5 text-accent-foreground" />
-            </div>
-            <h1 className="text-3xl font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
-              ContentPlan
-            </h1>
+          <div className="flex items-center justify-center">
+            <img src={sincroLogo} alt="Sincro" className="h-12 w-auto" />
           </div>
           <p className="text-muted-foreground">Planejamento estratégico de conteúdo</p>
         </div>
