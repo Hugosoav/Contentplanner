@@ -1,9 +1,10 @@
-import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Zap, Sparkles, PlusCircle, ChevronDown, Trash2, LogOut } from "lucide-react";
+import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Sparkles, PlusCircle, ChevronDown, Trash2, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { pillarLabels, pillarColors, type ContentPillar } from "@/lib/content-data";
 import { type ClientProfile } from "@/lib/client-data";
 import { useState } from "react";
+import sincroLogo from "@/assets/sincro-logo.png";
 
 interface SidebarProps {
   activeView: string;
@@ -39,15 +40,10 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
     <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border">
       {/* Brand */}
       <div className="p-6 border-b border-sidebar-border">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-sidebar-primary flex items-center justify-center">
-            <Zap className="w-4 h-4 text-sidebar-primary-foreground" />
-          </div>
-          <div>
-            <h1 className="font-heading text-lg text-sidebar-accent-foreground leading-none">ContentFlow</h1>
-            <p className="text-xs text-sidebar-foreground mt-0.5">Planejamento Estratégico</p>
-          </div>
+        <div className="flex items-center gap-3">
+          <img src={sincroLogo} alt="Sincro" className="h-8 w-auto brightness-0 invert" />
         </div>
+        <p className="text-[10px] uppercase tracking-widest text-sidebar-foreground/60 mt-2">Planejamento Estratégico</p>
       </div>
 
       {/* Client Selector */}
