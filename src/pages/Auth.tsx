@@ -5,13 +5,11 @@ import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Loader2, Sparkles, CalendarDays, Lightbulb } from "lucide-react";
 import sincroLogoLight from "@/assets/sincro-logo-light.png";
-import sincroLogo from "@/assets/sincro-logo.png";
 
 const Auth = () => {
   const navigate = useNavigate();
