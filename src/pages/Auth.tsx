@@ -5,12 +5,11 @@ import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
-import sincroLogo from "@/assets/sincro-logo.png";
+import { Loader2, Sparkles, CalendarDays, Lightbulb } from "lucide-react";
+import sincroLogoLight from "@/assets/sincro-logo-light.png";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -87,26 +86,62 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center space-y-2">
-          <div className="flex items-center justify-center">
-            <img src={sincroLogo} alt="Sincro" className="h-12 w-auto" />
-          </div>
-          <p className="text-muted-foreground">Planejamento estratégico de conteúdo</p>
+    <div className="min-h-screen grid lg:grid-cols-2 bg-background text-foreground">
+      {/* Brand panel */}
+      <div className="relative hidden lg:flex flex-col justify-between p-12 overflow-hidden bg-[#191919] bg-grid-brand">
+        <div className="absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-accent/30 blur-3xl" />
+        <div className="absolute -bottom-32 -right-20 w-[24rem] h-[24rem] rounded-full bg-accent/20 blur-3xl" />
+
+        <div className="relative z-10 flex items-center gap-3">
+          <img src={sincroLogoLight} alt="Sincro" className="h-10 w-auto" />
         </div>
 
-        <Card className="border-border shadow-lg">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-xl text-center">Bem-vindo</CardTitle>
-            <CardDescription className="text-center">
-              Acesse sua conta ou crie uma nova
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="relative z-10 space-y-8 max-w-md">
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-accent mb-4">Planejamento Estratégico</p>
+            <h1 className="text-5xl font-bold leading-tight text-white">
+              Sincronize sua <span className="text-gradient-brand">marca</span> com o que importa.
+            </h1>
+            <p className="mt-6 text-white/60 text-lg leading-relaxed">
+              Planeje, organize e publique conteúdo de alto impacto para cada cliente — em um só lugar.
+            </p>
+          </div>
+
+          <ul className="space-y-4">
+            {[
+              { icon: CalendarDays, label: "Calendário editorial multi-cliente" },
+              { icon: Sparkles, label: "Sugestões inteligentes com IA" },
+              { icon: Lightbulb, label: "Banco de ideias sempre à mão" },
+            ].map(({ icon: Icon, label }) => (
+              <li key={label} className="flex items-center gap-3 text-white/80">
+                <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-accent/15 border border-accent/30">
+                  <Icon className="w-4 h-4 text-accent" />
+                </span>
+                <span className="text-sm">{label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p className="relative z-10 text-xs text-white/40">© {new Date().getFullYear()} Sincro. Todos os direitos reservados.</p>
+      </div>
+
+      {/* Form panel */}
+      <div className="flex items-center justify-center px-6 py-12 lg:px-12 bg-background">
+        <div className="w-full max-w-md space-y-8">
+          <div className="lg:hidden flex justify-center">
+            <img src={sincroLogoLight} alt="Sincro" className="h-10 w-auto" />
+          </div>
+
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold tracking-tight">Bem-vindo de volta</h2>
+            <p className="text-muted-foreground">Acesse sua conta ou crie uma nova para começar.</p>
+          </div>
+
+          <div className="space-y-4">
             <Button
               variant="outline"
-              className="w-full h-11 gap-3 text-foreground"
+              className="w-full h-11 gap-3 text-foreground border-border bg-card hover:bg-secondary"
               onClick={handleGoogleLogin}
               disabled={loading}
             >
@@ -121,13 +156,13 @@ const Auth = () => {
 
             <div className="relative">
               <Separator />
-              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-3 text-xs text-muted-foreground">
-                ou
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-3 text-xs uppercase tracking-wider text-muted-foreground">
+                ou com e-mail
               </span>
             </div>
 
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="grid w-full grid-cols-2 bg-secondary">
                 <TabsTrigger value="login">Entrar</TabsTrigger>
                 <TabsTrigger value="signup">Criar conta</TabsTrigger>
               </TabsList>
@@ -156,7 +191,7 @@ const Auth = () => {
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full h-11 bg-accent hover:bg-accent/90 text-accent-foreground" disabled={loading}>
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Entrar"}
                   </Button>
                 </form>
@@ -198,14 +233,18 @@ const Auth = () => {
                       minLength={6}
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full h-11 bg-accent hover:bg-accent/90 text-accent-foreground" disabled={loading}>
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Criar conta"}
                   </Button>
                 </form>
               </TabsContent>
             </Tabs>
-          </CardContent>
-        </Card>
+          </div>
+
+          <p className="text-xs text-center text-muted-foreground">
+            Ao continuar, você concorda com os Termos de Uso e a Política de Privacidade da Sincro.
+          </p>
+        </div>
       </div>
     </div>
   );
