@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { pillarLabels, pillarColors, type ContentPillar } from "@/lib/content-data";
 import { type ClientProfile } from "@/lib/client-data";
 import { useState } from "react";
-import sincroLogo from "@/assets/sincro-logo.png";
+import sincroLogoLight from "@/assets/sincro-logo-light.png";
 
 interface SidebarProps {
   activeView: string;
@@ -37,13 +37,16 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border">
+    <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border relative overflow-hidden">
+      {/* Brand glow */}
+      <div className="pointer-events-none absolute -top-24 -left-16 w-64 h-64 rounded-full bg-accent/15 blur-3xl" />
+
       {/* Brand */}
-      <div className="p-6 border-b border-sidebar-border">
+      <div className="relative p-6 border-b border-sidebar-border">
         <div className="flex items-center gap-3">
-          <img src={sincroLogo} alt="Sincro" className="h-8 w-auto brightness-0 invert" />
+          <img src={sincroLogoLight} alt="Sincro" className="h-9 w-auto" />
         </div>
-        <p className="text-[10px] uppercase tracking-widest text-sidebar-foreground/60 mt-2">Planejamento Estratégico</p>
+        <p className="text-[10px] uppercase tracking-widest text-accent/80 mt-2 font-semibold">Planejamento Estratégico</p>
       </div>
 
       {/* Client Selector */}
@@ -98,20 +101,23 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
       </div>
 
       {/* Navigation */}
-      <nav className="p-4 flex-1">
+      <nav className="relative p-4 flex-1">
         <p className="text-[10px] uppercase tracking-widest text-sidebar-foreground/50 mb-3 px-3">Menu</p>
         <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.id}>
               <button
                 onClick={() => onViewChange(item.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   activeView === item.id
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-[inset_0_0_0_1px_hsl(var(--accent)/0.25)]"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
                 }`}
               >
-                <item.icon className="w-4 h-4" />
+                {activeView === item.id && (
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-0.5 rounded-r bg-accent" />
+                )}
+                <item.icon className={`w-4 h-4 ${activeView === item.id ? "text-accent" : ""}`} />
                 {item.label}
               </button>
             </li>
