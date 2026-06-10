@@ -138,16 +138,30 @@ const Index = () => {
         onDeleteClient={handleDeleteClient}
       />
 
-      <main className="flex-1 overflow-auto">
-        <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border px-8 py-4">
+      <main className="flex-1 overflow-auto relative">
+        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[60rem] h-64 bg-accent/10 blur-[120px] -z-0" />
+        <header className="sticky top-0 z-10 bg-background/70 backdrop-blur-xl border-b border-border px-8 py-4">
           <div className="flex items-center justify-between">
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Buscar conteúdos..."
-                className="pl-10 pr-4 py-2 rounded-lg bg-secondary border-0 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 w-72"
-              />
+            <div className="flex items-center gap-4">
+              {selectedClient && (
+                <div className="flex items-center gap-3 pr-4 border-r border-border">
+                  <div className="w-9 h-9 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center text-accent font-bold text-sm">
+                    {selectedClient.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Cliente ativo</p>
+                    <p className="text-sm font-semibold text-foreground leading-tight">{selectedClient.name}</p>
+                  </div>
+                </div>
+              )}
+              <div className="relative">
+                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Buscar conteúdos..."
+                  className="pl-10 pr-4 py-2 rounded-lg bg-secondary border border-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 w-72 transition-colors"
+                />
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -169,11 +183,14 @@ const Index = () => {
           </div>
         </header>
 
-        <div className="p-8">
+        <div className="relative p-8">
           {noClients ? (
             <div className="flex flex-col items-center justify-center py-32 space-y-6">
-              <div className="w-20 h-20 rounded-2xl bg-accent/10 flex items-center justify-center">
-                <Rocket className="w-10 h-10 text-accent" />
+              <div className="relative">
+                <div className="absolute inset-0 bg-accent/30 blur-2xl rounded-full" />
+                <div className="relative w-20 h-20 rounded-2xl bg-accent/15 border border-accent/30 flex items-center justify-center">
+                  <Rocket className="w-10 h-10 text-accent" />
+                </div>
               </div>
               <div className="text-center space-y-2 max-w-md">
                 <h2 className="text-2xl font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
