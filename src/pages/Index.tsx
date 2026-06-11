@@ -139,7 +139,7 @@ const Index = () => {
       />
 
       <main className="flex-1 overflow-auto relative">
-        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[60rem] h-64 bg-accent/10 blur-[120px] -z-0" />
+        
         <header className="sticky top-0 z-10 bg-background/70 backdrop-blur-xl border-b border-border px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
