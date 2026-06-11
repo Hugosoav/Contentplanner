@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { Loader2, Sparkles, CalendarDays, Lightbulb } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import sincroLogoLight from "@/assets/sincro-logo-light.png";
 
 const Auth = () => {
@@ -88,42 +88,8 @@ const Auth = () => {
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-background text-foreground">
       {/* Brand panel */}
-      <div className="relative hidden lg:flex flex-col justify-between p-12 overflow-hidden bg-[#191919] bg-grid-brand">
-        <div className="absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-accent/30 blur-3xl" />
-        <div className="absolute -bottom-32 -right-20 w-[24rem] h-[24rem] rounded-full bg-accent/20 blur-3xl" />
-
-        <div className="relative z-10 flex items-center gap-3">
-          <img src={sincroLogoLight} alt="Sincro" className="h-10 w-auto" />
-        </div>
-
-        <div className="relative z-10 space-y-8 max-w-md">
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-accent mb-4">Planejamento Estratégico</p>
-            <h1 className="text-5xl font-bold leading-tight text-white">
-              Sincronize sua <span className="text-gradient-brand">marca</span> com o que importa.
-            </h1>
-            <p className="mt-6 text-white/60 text-lg leading-relaxed">
-              Planeje, organize e publique conteúdo de alto impacto para cada cliente — em um só lugar.
-            </p>
-          </div>
-
-          <ul className="space-y-4">
-            {[
-              { icon: CalendarDays, label: "Calendário editorial multi-cliente" },
-              { icon: Sparkles, label: "Sugestões inteligentes com IA" },
-              { icon: Lightbulb, label: "Banco de ideias sempre à mão" },
-            ].map(({ icon: Icon, label }) => (
-              <li key={label} className="flex items-center gap-3 text-white/80">
-                <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-accent/15 border border-accent/30">
-                  <Icon className="w-4 h-4 text-accent" />
-                </span>
-                <span className="text-sm">{label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <p className="relative z-10 text-xs text-white/40">© {new Date().getFullYear()} Sincro. Todos os direitos reservados.</p>
+      <div className="relative hidden lg:flex flex-col items-center justify-center p-12 bg-[#191919]">
+        <img src={sincroLogoLight} alt="Sincro" className="h-12 w-auto" />
       </div>
 
       {/* Form panel */}
