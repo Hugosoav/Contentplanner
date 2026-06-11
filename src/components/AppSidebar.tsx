@@ -38,15 +38,11 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
 
   return (
     <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border relative overflow-hidden">
-      {/* Brand glow */}
-      <div className="pointer-events-none absolute -top-24 -left-16 w-64 h-64 rounded-full bg-accent/15 blur-3xl" />
-
       {/* Brand */}
       <div className="relative p-6 border-b border-sidebar-border">
         <div className="flex items-center gap-3">
           <img src={sincroLogoLight} alt="Sincro" className="h-9 w-auto" />
         </div>
-        <p className="text-[10px] uppercase tracking-widest text-accent/80 mt-2 font-semibold">Planejamento Estratégico</p>
       </div>
 
       {/* Client Selector */}
