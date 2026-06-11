@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { Loader2, Sparkles, CalendarDays, Lightbulb } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import sincroLogoLight from "@/assets/sincro-logo-light.png";
 
 const Auth = () => {
