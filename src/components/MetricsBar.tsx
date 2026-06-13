@@ -18,7 +18,7 @@ const MetricsBar = ({ items }: MetricsBarProps) => {
   ];
 
   return (
-    <div className="grid grid-cols-5 gap-4 mb-8">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-8">
       {metrics.map((m) => (
         <div
           key={m.label}
