@@ -125,15 +125,16 @@ const ContentCalendar = ({ items, onEdit, onDelete, onMove }: ContentCalendarPro
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-2 mb-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2">
         {DAYS.map((d) => (
-          <div key={d} className="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground text-center py-2">
-            {d}
+          <div key={d} className="text-[9px] sm:text-[10px] uppercase tracking-widest font-semibold text-muted-foreground text-center py-2">
+            <span className="hidden sm:inline">{d}</span>
+            <span className="sm:hidden">{d.charAt(0)}</span>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-2">{cells}</div>
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">{cells}</div>
     </div>
   );
 };
