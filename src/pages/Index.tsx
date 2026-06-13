@@ -10,12 +10,13 @@ import OnboardingTutorial from "@/components/OnboardingTutorial";
 import { type ClientProfile } from "@/lib/client-data";
 import { type ContentItem } from "@/lib/content-data";
 import { useSupabaseData } from "@/hooks/useSupabaseData";
-import { Plus, Search, Rocket, Loader2 } from "lucide-react";
+import { Plus, Search, Rocket, Loader2, Menu } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
   const [activeView, setActiveView] = useState("calendar");
   const [showNewClient, setShowNewClient] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showTutorial, setShowTutorial] = useState(() => {
     return !localStorage.getItem("contentplan_tutorial_done");
   });
@@ -136,25 +137,34 @@ const Index = () => {
         onSelectClient={setSelectedClient}
         onNewClient={() => setShowNewClient(true)}
         onDeleteClient={handleDeleteClient}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
 
-      <main className="flex-1 overflow-auto relative">
+      <main className="flex-1 overflow-auto relative w-full lg:w-auto">
         
-        <header className="sticky top-0 z-10 bg-background/70 backdrop-blur-xl border-b border-border px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <header className="sticky top-0 z-10 bg-background/70 backdrop-blur-xl border-b border-border px-4 sm:px-8 py-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden p-2 -ml-2 rounded-lg text-foreground hover:bg-secondary transition-colors"
+                aria-label="Abrir menu"
+              >
+                <Menu className="w-5 h-5" />
+              </button>
               {selectedClient && (
-                <div className="flex items-center gap-3 pr-4 border-r border-border">
+                <div className="flex items-center gap-3 pr-2 sm:pr-4 sm:border-r border-border min-w-0">
                   <div className="w-9 h-9 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center text-accent font-bold text-sm">
                     {selectedClient.name.charAt(0).toUpperCase()}
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Cliente ativo</p>
-                    <p className="text-sm font-semibold text-foreground leading-tight">{selectedClient.name}</p>
+                    <p className="text-sm font-semibold text-foreground leading-tight truncate">{selectedClient.name}</p>
                   </div>
                 </div>
               )}
-              <div className="relative">
+              <div className="relative hidden md:block">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
                   type="text"
@@ -163,27 +173,28 @@ const Index = () => {
                 />
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => setShowTutorial(true)}
-                className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors"
+                className="hidden sm:inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors"
               >
                 <Rocket className="w-4 h-4" />
                 Tutorial
               </button>
               <button
                 onClick={() => { setEditingContent(null); setShowContentModal(true); }}
-                className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-accent/90 transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-3 sm:px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-accent/90 transition-colors shadow-sm"
                 disabled={noClients}
               >
                 <Plus className="w-4 h-4" />
-                Novo Conteúdo
+                <span className="hidden sm:inline">Novo Conteúdo</span>
+                <span className="sm:hidden">Novo</span>
               </button>
             </div>
           </div>
         </header>
 
-        <div className="relative p-8">
+        <div className="relative p-4 sm:p-8">
           {noClients ? (
             <div className="flex flex-col items-center justify-center py-32 space-y-6">
               <div className="relative">
