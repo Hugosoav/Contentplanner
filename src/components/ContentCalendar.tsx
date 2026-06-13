@@ -44,7 +44,7 @@ const ContentCalendar = ({ items, onEdit, onDelete, onMove }: ContentCalendarPro
 
   const cells = [];
   for (let i = 0; i < firstDayOfWeek; i++) {
-    cells.push(<div key={`empty-${i}`} className="min-h-[120px] bg-secondary/30 rounded-lg" />);
+    cells.push(<div key={`empty-${i}`} className="min-h-[70px] sm:min-h-[120px] bg-secondary/30 rounded-lg" />);
   }
   for (let day = 1; day <= daysInMonth; day++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
@@ -53,7 +53,7 @@ const ContentCalendar = ({ items, onEdit, onDelete, onMove }: ContentCalendarPro
     cells.push(
       <div
         key={day}
-        className={`min-h-[120px] rounded-lg border p-2 transition-colors hover:border-accent/40 ${
+        className={`min-h-[70px] sm:min-h-[120px] rounded-lg border p-1 sm:p-2 transition-colors hover:border-accent/40 ${
           isToday(day) ? "border-accent bg-accent/5" : "border-border bg-card"
         }`}
       >
