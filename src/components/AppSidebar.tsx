@@ -1,4 +1,4 @@
-import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Sparkles, PlusCircle, ChevronDown, Trash2, LogOut } from "lucide-react";
+import { CalendarDays, LayoutGrid, Lightbulb, BarChart3, Settings, Sparkles, PlusCircle, ChevronDown, Trash2, LogOut, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { pillarLabels, pillarColors, type ContentPillar } from "@/lib/content-data";
@@ -14,6 +14,8 @@ interface SidebarProps {
   onSelectClient: (client: ClientProfile) => void;
   onNewClient: () => void;
   onDeleteClient: (id: string) => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 const navItems = [
@@ -26,7 +28,7 @@ const navItems = [
 
 const pillars: ContentPillar[] = ["educativo", "autoridade", "engajamento", "vendas", "bastidores"];
 
-const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelectClient, onNewClient, onDeleteClient }: SidebarProps) => {
+const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelectClient, onNewClient, onDeleteClient, isOpen = false, onClose }: SidebarProps) => {
   const [clientDropdownOpen, setClientDropdownOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const navigate = useNavigate();
@@ -36,13 +38,36 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
     navigate("/auth", { replace: true });
   };
 
+  const handleNav = (view: string) => {
+    onViewChange(view);
+    onClose?.();
+  };
+
   return (
-    <aside className="w-64 min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border relative overflow-hidden">
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      <aside
+        className={`fixed lg:sticky top-0 left-0 z-40 w-64 h-screen bg-sidebar text-sidebar-foreground flex flex-col border-r border-sidebar-border overflow-hidden transition-transform duration-300 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
+      >
       {/* Brand */}
-      <div className="relative p-6 border-b border-sidebar-border">
+      <div className="relative p-6 border-b border-sidebar-border flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img src={sincroLogoLight} alt="Sincro" className="h-9 w-auto" />
         </div>
+        <button
+          onClick={onClose}
+          className="lg:hidden text-sidebar-foreground/70 hover:text-sidebar-foreground"
+          aria-label="Fechar menu"
+        >
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Client Selector */}
@@ -103,7 +128,7 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
           {navItems.map((item) => (
             <li key={item.id}>
               <button
-                onClick={() => onViewChange(item.id)}
+                onClick={() => handleNav(item.id)}
                 className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   activeView === item.id
                     ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-[inset_0_0_0_1px_hsl(var(--accent)/0.25)]"
@@ -144,7 +169,8 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
           Sair
         </button>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 };
 
