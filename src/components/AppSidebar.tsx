@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { pillarLabels, pillarColors, type ContentPillar } from "@/lib/content-data";
 import { type ClientProfile } from "@/lib/client-data";
 import { useState } from "react";
-import sincroLogoLight from "@/assets/sincro-logo-light.png";
+import sincroLogoFull from "@/assets/sincro-logo-full.png.asset.json";
 
 interface SidebarProps {
   activeView: string;
@@ -59,7 +59,7 @@ const AppSidebar = ({ activeView, onViewChange, clients, selectedClient, onSelec
       {/* Brand */}
       <div className="relative p-6 border-b border-sidebar-border flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <img src={sincroLogoLight} alt="Sincro" className="h-9 w-auto" />
+          <img src={sincroLogoFull.url} alt="Sincro" className="h-7 w-auto" />
         </div>
         <button
           onClick={onClose}
