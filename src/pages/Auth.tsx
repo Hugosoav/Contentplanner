@@ -9,8 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import sincroLogoLight from "@/assets/sincro-logo-light.png";
-import sincroHero3d from "@/assets/sincro-hero-3d.jpg";
+import sincroLogoFull from "@/assets/sincro-logo-full.png.asset.json";
+import sincroMark from "@/assets/sincro-mark.png.asset.json";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -19,6 +19,7 @@ const Auth = () => {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
+  const [activeTab, setActiveTab] = useState<"entrar" | "sobre">("entrar");
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -87,52 +88,78 @@ const Auth = () => {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#0d0d0d] text-white">
-      {/* Background hero image */}
+    <div className="relative min-h-screen overflow-hidden bg-[#0a0a0a] text-white">
+      {/* Ambient gradient orbs */}
       <div className="pointer-events-none absolute inset-0">
-        <img
-          src={sincroHero3d}
-          alt=""
-          aria-hidden="true"
-          className="absolute right-0 top-0 h-full w-full object-cover object-right opacity-90 lg:w-[65%]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d] via-[#0d0d0d]/85 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d]/80 via-transparent to-[#0d0d0d]/40" />
+        <div className="absolute -top-32 -left-32 h-[28rem] w-[28rem] rounded-full bg-[#e91e63] opacity-20 blur-[140px]" />
+        <div className="absolute top-1/3 -right-32 h-[32rem] w-[32rem] rounded-full bg-[#f2540f] opacity-20 blur-[160px]" />
+        <div className="absolute bottom-0 left-1/3 h-[24rem] w-[24rem] rounded-full bg-[#f5a623] opacity-10 blur-[140px]" />
       </div>
 
       {/* Top bar */}
       <header className="relative z-10 flex items-center justify-between px-6 py-6 lg:px-12">
-        <img src={sincroLogoLight} alt="Sincro" className="h-8 w-auto" />
-        <nav className="hidden items-center gap-8 text-xs uppercase tracking-[0.2em] text-white/70 md:flex">
-          <span>Planejamento</span>
-          <span>Conteúdo</span>
-          <span>IA</span>
-          <span>Calendário</span>
+        <img src={sincroLogoFull.url} alt="Sincro" className="h-7 w-auto" />
+        <nav className="hidden items-center gap-8 text-xs uppercase tracking-[0.2em] text-white/60 md:flex">
+          <button
+            onClick={() => setActiveTab("entrar")}
+            className={`transition-colors hover:text-white ${activeTab === "entrar" ? "text-white" : ""}`}
+          >
+            Entrar
+          </button>
+          <button
+            onClick={() => setActiveTab("sobre")}
+            className={`transition-colors hover:text-white ${activeTab === "sobre" ? "text-white" : ""}`}
+          >
+            Sobre
+          </button>
         </nav>
       </header>
 
-      {/* Main grid: hero copy + auth card */}
-      <main className="relative z-10 grid min-h-[calc(100vh-7rem)] grid-cols-1 items-center gap-12 px-6 pb-16 lg:grid-cols-2 lg:px-12">
+      {/* Main grid */}
+      <main className="relative z-10 grid min-h-[calc(100vh-7rem)] grid-cols-1 items-center gap-16 px-6 pb-16 lg:grid-cols-2 lg:gap-8 lg:px-16">
         {/* Hero copy */}
         <div className="max-w-xl space-y-8">
-          <h1 className="font-heading text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Sincronize sua marca<br />
-            com o que <span className="text-accent">importa.</span>
-          </h1>
-          <p className="max-w-md text-base text-white/70 sm:text-lg">
-            A plataforma de planejamento estratégico de conteúdo que conecta criatividade, IA e calendário em um só lugar.
-          </p>
-          <div className="flex flex-wrap items-center gap-6 pt-2 text-xs uppercase tracking-[0.2em] text-white/50">
-            <span>← Role para começar →</span>
+          <div className="flex items-center gap-4">
+            <img src={sincroMark.url} alt="" className="h-14 w-14" />
+            <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/40">
+              Planejamento de Conteúdo
+            </span>
           </div>
+          {activeTab === "entrar" ? (
+            <>
+              <h1 className="font-heading text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+                Sincronize sua marca<br />
+                com o que{" "}
+                <span className="text-gradient-brand">importa.</span>
+              </h1>
+              <p className="max-w-md text-base leading-relaxed text-white/60 sm:text-lg">
+                A plataforma que conecta planejamento estratégico, IA e calendário editorial em um só lugar.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="font-heading text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
+                Sobre a <span className="text-gradient-brand">Sincro</span>
+              </h1>
+              <p className="max-w-md text-base leading-relaxed text-white/70">
+                Somos uma plataforma criada para estrategistas de conteúdo, agências e criadores que precisam organizar pautas, calendários e ideias em um fluxo único — potencializado por inteligência artificial.
+              </p>
+              <ul className="space-y-3 text-sm text-white/60">
+                <li className="flex gap-3"><span className="text-gradient-brand">→</span> Gestão multi-cliente com isolamento total</li>
+                <li className="flex gap-3"><span className="text-gradient-brand">→</span> Sugestões de conteúdo geradas por IA</li>
+                <li className="flex gap-3"><span className="text-gradient-brand">→</span> Calendário e quadro editorial integrados</li>
+                <li className="flex gap-3"><span className="text-gradient-brand">→</span> Banco de ideias persistente por cliente</li>
+              </ul>
+            </>
+          )}
         </div>
 
         {/* Auth card */}
-        <div className="w-full max-w-md justify-self-end">
-          <div className="rounded-2xl border border-white/10 bg-black/60 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+        <div className="w-full max-w-md justify-self-center lg:justify-self-end">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 shadow-2xl backdrop-blur-2xl sm:p-8">
             <div className="mb-6 space-y-1">
-              <h2 className="text-2xl font-bold tracking-tight text-white">Acesse a Sincro</h2>
-              <p className="text-sm text-white/60">Entre na sua conta ou crie uma nova.</p>
+              <h2 className="text-2xl font-semibold tracking-tight text-white">Acesse a plataforma</h2>
+              <p className="text-sm text-white/50">Entre ou crie sua conta para começar.</p>
             </div>
 
             <div className="space-y-4">
@@ -153,15 +180,15 @@ const Auth = () => {
 
             <div className="relative">
               <Separator className="bg-white/10" />
-              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/80 px-3 text-xs uppercase tracking-wider text-white/50">
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0a0a0a] px-3 text-xs uppercase tracking-wider text-white/40">
                 ou com e-mail
               </span>
             </div>
 
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-white/5">
-                <TabsTrigger value="login" className="data-[state=active]:bg-accent data-[state=active]:text-white">Entrar</TabsTrigger>
-                <TabsTrigger value="signup" className="data-[state=active]:bg-accent data-[state=active]:text-white">Criar conta</TabsTrigger>
+                <TabsTrigger value="login" className="data-[state=active]:bg-gradient-brand data-[state=active]:text-white">Entrar</TabsTrigger>
+                <TabsTrigger value="signup" className="data-[state=active]:bg-gradient-brand data-[state=active]:text-white">Criar conta</TabsTrigger>
               </TabsList>
 
               <TabsContent value="login" className="space-y-4 mt-4">
@@ -190,7 +217,7 @@ const Auth = () => {
                       className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
                     />
                   </div>
-                  <Button type="submit" className="w-full h-11 bg-accent hover:bg-accent/90 text-white" disabled={loading}>
+                  <Button type="submit" className="w-full h-11 bg-gradient-brand hover:opacity-90 text-white border-0" disabled={loading}>
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Entrar"}
                   </Button>
                 </form>
@@ -235,7 +262,7 @@ const Auth = () => {
                       className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
                     />
                   </div>
-                  <Button type="submit" className="w-full h-11 bg-accent hover:bg-accent/90 text-white" disabled={loading}>
+                  <Button type="submit" className="w-full h-11 bg-gradient-brand hover:opacity-90 text-white border-0" disabled={loading}>
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Criar conta"}
                   </Button>
                 </form>
