@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import sincroLogoLight from "@/assets/sincro-logo-light.png";
+import sincroHero3d from "@/assets/sincro-hero-3d.jpg";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -86,28 +87,58 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 bg-background text-foreground">
-      {/* Brand panel */}
-      <div className="relative hidden lg:flex flex-col items-center justify-center p-12 bg-[#191919]">
-        <img src={sincroLogoLight} alt="Sincro" className="h-12 w-auto" />
+    <div className="relative min-h-screen overflow-hidden bg-[#0d0d0d] text-white">
+      {/* Background hero image */}
+      <div className="pointer-events-none absolute inset-0">
+        <img
+          src={sincroHero3d}
+          alt=""
+          aria-hidden="true"
+          className="absolute right-0 top-0 h-full w-full object-cover object-right opacity-90 lg:w-[65%]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d] via-[#0d0d0d]/85 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d]/80 via-transparent to-[#0d0d0d]/40" />
       </div>
 
-      {/* Form panel */}
-      <div className="flex items-center justify-center px-6 py-12 lg:px-12 bg-background">
-        <div className="w-full max-w-md space-y-8">
-          <div className="lg:hidden flex justify-center">
-            <img src={sincroLogoLight} alt="Sincro" className="h-10 w-auto" />
-          </div>
+      {/* Top bar */}
+      <header className="relative z-10 flex items-center justify-between px-6 py-6 lg:px-12">
+        <img src={sincroLogoLight} alt="Sincro" className="h-8 w-auto" />
+        <nav className="hidden items-center gap-8 text-xs uppercase tracking-[0.2em] text-white/70 md:flex">
+          <span>Planejamento</span>
+          <span>Conteúdo</span>
+          <span>IA</span>
+          <span>Calendário</span>
+        </nav>
+      </header>
 
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Bem-vindo de volta</h2>
-            <p className="text-muted-foreground">Acesse sua conta ou crie uma nova para começar.</p>
+      {/* Main grid: hero copy + auth card */}
+      <main className="relative z-10 grid min-h-[calc(100vh-7rem)] grid-cols-1 items-center gap-12 px-6 pb-16 lg:grid-cols-2 lg:px-12">
+        {/* Hero copy */}
+        <div className="max-w-xl space-y-8">
+          <h1 className="font-heading text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+            Sincronize sua marca<br />
+            com o que <span className="text-accent">importa.</span>
+          </h1>
+          <p className="max-w-md text-base text-white/70 sm:text-lg">
+            A plataforma de planejamento estratégico de conteúdo que conecta criatividade, IA e calendário em um só lugar.
+          </p>
+          <div className="flex flex-wrap items-center gap-6 pt-2 text-xs uppercase tracking-[0.2em] text-white/50">
+            <span>← Role para começar →</span>
           </div>
+        </div>
 
-          <div className="space-y-4">
+        {/* Auth card */}
+        <div className="w-full max-w-md justify-self-end">
+          <div className="rounded-2xl border border-white/10 bg-black/60 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+            <div className="mb-6 space-y-1">
+              <h2 className="text-2xl font-bold tracking-tight text-white">Acesse a Sincro</h2>
+              <p className="text-sm text-white/60">Entre na sua conta ou crie uma nova.</p>
+            </div>
+
+            <div className="space-y-4">
             <Button
               variant="outline"
-              className="w-full h-11 gap-3 text-foreground border-border bg-card hover:bg-secondary"
+              className="w-full h-11 gap-3 border-white/15 bg-white/5 text-white hover:bg-white/10 hover:text-white"
               onClick={handleGoogleLogin}
               disabled={loading}
             >
@@ -121,22 +152,22 @@ const Auth = () => {
             </Button>
 
             <div className="relative">
-              <Separator />
-              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-3 text-xs uppercase tracking-wider text-muted-foreground">
+              <Separator className="bg-white/10" />
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/80 px-3 text-xs uppercase tracking-wider text-white/50">
                 ou com e-mail
               </span>
             </div>
 
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-secondary">
-                <TabsTrigger value="login">Entrar</TabsTrigger>
-                <TabsTrigger value="signup">Criar conta</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 bg-white/5">
+                <TabsTrigger value="login" className="data-[state=active]:bg-accent data-[state=active]:text-white">Entrar</TabsTrigger>
+                <TabsTrigger value="signup" className="data-[state=active]:bg-accent data-[state=active]:text-white">Criar conta</TabsTrigger>
               </TabsList>
 
               <TabsContent value="login" className="space-y-4 mt-4">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email">E-mail</Label>
+                    <Label htmlFor="login-email" className="text-white/80">E-mail</Label>
                     <Input
                       id="login-email"
                       type="email"
@@ -144,10 +175,11 @@ const Auth = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
+                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="login-password">Senha</Label>
+                    <Label htmlFor="login-password" className="text-white/80">Senha</Label>
                     <Input
                       id="login-password"
                       type="password"
@@ -155,9 +187,10 @@ const Auth = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
+                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
                     />
                   </div>
-                  <Button type="submit" className="w-full h-11 bg-accent hover:bg-accent/90 text-accent-foreground" disabled={loading}>
+                  <Button type="submit" className="w-full h-11 bg-accent hover:bg-accent/90 text-white" disabled={loading}>
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Entrar"}
                   </Button>
                 </form>
@@ -166,7 +199,7 @@ const Auth = () => {
               <TabsContent value="signup" className="space-y-4 mt-4">
                 <form onSubmit={handleSignup} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name">Nome completo</Label>
+                    <Label htmlFor="signup-name" className="text-white/80">Nome completo</Label>
                     <Input
                       id="signup-name"
                       type="text"
@@ -174,10 +207,11 @@ const Auth = () => {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       required
+                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">E-mail</Label>
+                    <Label htmlFor="signup-email" className="text-white/80">E-mail</Label>
                     <Input
                       id="signup-email"
                       type="email"
@@ -185,10 +219,11 @@ const Auth = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
+                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Senha</Label>
+                    <Label htmlFor="signup-password" className="text-white/80">Senha</Label>
                     <Input
                       id="signup-password"
                       type="password"
@@ -197,21 +232,23 @@ const Auth = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       minLength={6}
+                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
                     />
                   </div>
-                  <Button type="submit" className="w-full h-11 bg-accent hover:bg-accent/90 text-accent-foreground" disabled={loading}>
+                  <Button type="submit" className="w-full h-11 bg-accent hover:bg-accent/90 text-white" disabled={loading}>
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Criar conta"}
                   </Button>
                 </form>
               </TabsContent>
             </Tabs>
-          </div>
+            </div>
 
-          <p className="text-xs text-center text-muted-foreground">
-            Ao continuar, você concorda com os Termos de Uso e a Política de Privacidade da Sincro.
-          </p>
+            <p className="mt-6 text-center text-xs text-white/40">
+              Ao continuar, você concorda com os Termos de Uso e a Política de Privacidade da Sincro.
+            </p>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
