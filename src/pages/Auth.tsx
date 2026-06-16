@@ -12,6 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { toast } from "sonner";
 import { Loader2, Check, Menu } from "lucide-react";
 import sincroLogoWhite from "@/assets/sincro-logo-white.png.asset.json";
+import sincroBgAurora from "@/assets/sincro-bg-aurora.png.asset.json";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -132,11 +133,27 @@ const Auth = () => {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#0a0a0a] text-white">
-      {/* Animated aurora gradient */}
-      <div className="pointer-events-none absolute inset-0 bg-aurora-orange opacity-90" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-transparent" />
+    <div className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
+      {/* Animated aurora background image */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <img
+          src={sincroBgAurora.url}
+          alt=""
+          aria-hidden
+          className="aurora-pan absolute inset-0 h-full w-full object-cover"
+        />
+      </div>
+      {/* Saturated color washes for extra punch */}
+      <div className="pointer-events-none absolute inset-0 mix-blend-screen">
+        <div className="aurora-glow absolute -top-40 right-[-10%] h-[60rem] w-[60rem] rounded-full bg-[#ff5a1f] opacity-60 blur-[160px]" />
+        <div className="aurora-glow absolute top-1/3 right-0 h-[40rem] w-[40rem] rounded-full bg-[#ffb347] opacity-50 blur-[140px]" style={{ animationDelay: "-3s" }} />
+        <div className="aurora-glow absolute bottom-[-20%] right-1/4 h-[36rem] w-[36rem] rounded-full bg-[#e91e63] opacity-30 blur-[160px]" style={{ animationDelay: "-6s" }} />
+      </div>
+      {/* Left fade for text legibility */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/85 via-30% to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050505]/70 via-transparent to-transparent" />
+      {/* Subtle grain */}
+      <div className="pointer-events-none absolute inset-0 grain-overlay opacity-40" />
 
       {/* Top bar */}
       <header className="relative z-20 flex items-center justify-between px-6 py-6 lg:px-12">
