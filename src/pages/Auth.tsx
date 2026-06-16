@@ -7,10 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
-import sincroLogoFull from "@/assets/sincro-logo-full.png.asset.json";
-import sincroMark from "@/assets/sincro-mark.png.asset.json";
+import { Loader2, Check, Menu } from "lucide-react";
+import sincroLogoWhite from "@/assets/sincro-logo-white.png.asset.json";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -19,7 +20,9 @@ const Auth = () => {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
-  const [activeTab, setActiveTab] = useState<"entrar" | "sobre">("entrar");
+  const [section, setSection] = useState<"home" | "sobre" | "planos" | "faq">("home");
+  const [authOpen, setAuthOpen] = useState(false);
+  const [mobileNav, setMobileNav] = useState(false);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -87,195 +90,309 @@ const Auth = () => {
     );
   }
 
+  const navItems: { id: typeof section; label: string }[] = [
+    { id: "faq", label: "FAQ" },
+    { id: "planos", label: "PLANOS" },
+    { id: "sobre", label: "SOBRE" },
+  ];
+
+  const plans = [
+    {
+      name: "Starter",
+      price: "R$ 0",
+      period: "/mês",
+      desc: "Para começar a organizar seu conteúdo.",
+      features: ["1 cliente", "Calendário editorial", "Banco de ideias", "5 sugestões IA / mês"],
+      cta: "Começar grátis",
+    },
+    {
+      name: "Pro",
+      price: "R$ 79",
+      period: "/mês",
+      desc: "Para criadores e estrategistas em ritmo.",
+      features: ["10 clientes", "Sugestões IA ilimitadas", "Quadro + Calendário", "Exportação de pautas"],
+      cta: "Assinar Pro",
+      highlight: true,
+    },
+    {
+      name: "Agência",
+      price: "R$ 199",
+      period: "/mês",
+      desc: "Para agências com múltiplas marcas.",
+      features: ["Clientes ilimitados", "Multi-usuário", "Suporte prioritário", "Branding personalizado"],
+      cta: "Falar com vendas",
+    },
+  ];
+
+  const faqs = [
+    { q: "Como funciona a Sincro?", a: "A Sincro centraliza planejamento, calendário editorial e sugestões de IA em um único fluxo, permitindo gerenciar múltiplos clientes em dashboards isolados." },
+    { q: "Preciso de cartão para começar?", a: "Não. O plano Starter é gratuito e não exige cartão de crédito." },
+    { q: "Como a IA gera sugestões?", a: "Usamos modelos de linguagem treinados para criar pautas, títulos e ideias adaptadas ao posicionamento de cada cliente cadastrado." },
+    { q: "Posso cancelar a qualquer momento?", a: "Sim. Você pode cancelar ou trocar de plano diretamente nas configurações da conta." },
+  ];
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0a0a0a] text-white">
-      {/* Ambient gradient orbs */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-32 -left-32 h-[28rem] w-[28rem] rounded-full bg-[#e91e63] opacity-20 blur-[140px]" />
-        <div className="absolute top-1/3 -right-32 h-[32rem] w-[32rem] rounded-full bg-[#f2540f] opacity-20 blur-[160px]" />
-        <div className="absolute bottom-0 left-1/3 h-[24rem] w-[24rem] rounded-full bg-[#f5a623] opacity-10 blur-[140px]" />
-      </div>
+      {/* Animated aurora gradient */}
+      <div className="pointer-events-none absolute inset-0 bg-aurora-orange opacity-90" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-transparent" />
 
       {/* Top bar */}
-      <header className="relative z-10 flex items-center justify-between px-6 py-6 lg:px-12">
-        <img src={sincroLogoFull.url} alt="Sincro" className="h-7 w-auto" />
-        <nav className="hidden items-center gap-8 text-xs uppercase tracking-[0.2em] text-white/60 md:flex">
+      <header className="relative z-20 flex items-center justify-between px-6 py-6 lg:px-12">
+        <button onClick={() => setSection("home")} className="flex items-center">
+          <img src={sincroLogoWhite.url} alt="Sincro" className="h-8 w-auto" />
+        </button>
+        <nav className="hidden items-center gap-10 text-xs font-medium uppercase tracking-[0.25em] text-white/70 md:flex">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setSection(item.id)}
+              className={`transition-colors hover:text-white ${section === item.id ? "text-white" : ""}`}
+            >
+              {item.label}
+            </button>
+          ))}
           <button
-            onClick={() => setActiveTab("entrar")}
-            className={`transition-colors hover:text-white ${activeTab === "entrar" ? "text-white" : ""}`}
+            onClick={() => setAuthOpen(true)}
+            className="rounded-full border border-white/20 px-5 py-2 text-[11px] tracking-[0.25em] text-white transition-colors hover:bg-white/10"
+          >
+            ENTRAR
+          </button>
+        </nav>
+        <button
+          className="md:hidden text-white/80"
+          onClick={() => setMobileNav((v) => !v)}
+          aria-label="Menu"
+        >
+          <Menu className="h-6 w-6" />
+        </button>
+      </header>
+
+      {/* Mobile nav drawer */}
+      {mobileNav && (
+        <div className="relative z-20 mx-6 mb-4 flex flex-col gap-3 rounded-xl border border-white/10 bg-black/60 p-5 backdrop-blur-xl md:hidden">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => { setSection(item.id); setMobileNav(false); }}
+              className="text-left text-sm uppercase tracking-[0.2em] text-white/80"
+            >
+              {item.label}
+            </button>
+          ))}
+          <button
+            onClick={() => { setAuthOpen(true); setMobileNav(false); }}
+            className="rounded-full border border-white/20 px-5 py-2 text-xs uppercase tracking-[0.2em] text-white"
           >
             Entrar
           </button>
-          <button
-            onClick={() => setActiveTab("sobre")}
-            className={`transition-colors hover:text-white ${activeTab === "sobre" ? "text-white" : ""}`}
-          >
-            Sobre
-          </button>
-        </nav>
-      </header>
-
-      {/* Main grid */}
-      <main className="relative z-10 grid min-h-[calc(100vh-7rem)] grid-cols-1 items-center gap-16 px-6 pb-16 lg:grid-cols-2 lg:gap-8 lg:px-16">
-        {/* Hero copy */}
-        <div className="max-w-xl space-y-8">
-          <div className="flex items-center gap-4">
-            <img src={sincroMark.url} alt="" className="h-14 w-14" />
-            <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-white/40">
-              Planejamento de Conteúdo
-            </span>
-          </div>
-          {activeTab === "entrar" ? (
-            <>
-              <h1 className="font-heading text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
-                Sincronize sua marca<br />
-                com o que{" "}
-                <span className="text-gradient-brand">importa.</span>
-              </h1>
-              <p className="max-w-md text-base leading-relaxed text-white/60 sm:text-lg">
-                A plataforma que conecta planejamento estratégico, IA e calendário editorial em um só lugar.
-              </p>
-            </>
-          ) : (
-            <>
-              <h1 className="font-heading text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
-                Sobre a <span className="text-gradient-brand">Sincro</span>
-              </h1>
-              <p className="max-w-md text-base leading-relaxed text-white/70">
-                Somos uma plataforma criada para estrategistas de conteúdo, agências e criadores que precisam organizar pautas, calendários e ideias em um fluxo único — potencializado por inteligência artificial.
-              </p>
-              <ul className="space-y-3 text-sm text-white/60">
-                <li className="flex gap-3"><span className="text-gradient-brand">→</span> Gestão multi-cliente com isolamento total</li>
-                <li className="flex gap-3"><span className="text-gradient-brand">→</span> Sugestões de conteúdo geradas por IA</li>
-                <li className="flex gap-3"><span className="text-gradient-brand">→</span> Calendário e quadro editorial integrados</li>
-                <li className="flex gap-3"><span className="text-gradient-brand">→</span> Banco de ideias persistente por cliente</li>
-              </ul>
-            </>
-          )}
         </div>
+      )}
 
-        {/* Auth card */}
-        <div className="w-full max-w-md justify-self-center lg:justify-self-end">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 shadow-2xl backdrop-blur-2xl sm:p-8">
-            <div className="mb-6 space-y-1">
-              <h2 className="text-2xl font-semibold tracking-tight text-white">Acesse a plataforma</h2>
-              <p className="text-sm text-white/50">Entre ou crie sua conta para começar.</p>
+      {/* Main content */}
+      <main className="relative z-10 px-6 pb-20 pt-6 lg:px-16">
+        {section === "home" && (
+          <section className="grid min-h-[calc(100vh-12rem)] grid-cols-1 items-center">
+            <div className="max-w-3xl">
+              <h1 className="font-heading text-5xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
+                Para gestores<br />
+                e criadores<br />
+                de conteúdo
+              </h1>
+              <p className="mt-8 max-w-lg text-sm leading-relaxed text-white/70 sm:text-base">
+                Planejamento, criatividade, gestão e inteligência artificial trabalhando em perfeita sincronia para transformar ideias em conteúdo, conteúdo em estratégia e estratégia em resultados. Menos processos dispersos e mais clareza, velocidade e crescimento.
+              </p>
+              <div className="mt-10 flex flex-wrap items-center gap-4">
+                <Button
+                  onClick={() => setAuthOpen(true)}
+                  className="h-12 rounded-full bg-white px-8 text-sm font-medium uppercase tracking-[0.2em] text-black hover:bg-white/90"
+                >
+                  Começar agora
+                </Button>
+                <button
+                  onClick={() => setSection("sobre")}
+                  className="text-xs uppercase tracking-[0.25em] text-white/60 hover:text-white"
+                >
+                  Saiba mais →
+                </button>
+              </div>
+              <div className="mt-16 flex items-center gap-2 text-white/40">
+                <span className="h-px w-8 bg-white/40" />
+                <span className="h-px w-8 bg-white/40" />
+                <span className="h-px w-8 bg-white/40" />
+              </div>
             </div>
+          </section>
+        )}
 
-            <div className="space-y-4">
-            <Button
-              variant="outline"
-              className="w-full h-11 gap-3 border-white/15 bg-white/5 text-white hover:bg-white/10 hover:text-white"
-              onClick={handleGoogleLogin}
-              disabled={loading}
-            >
-              <svg className="h-5 w-5" viewBox="0 0 24 24">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-              </svg>
-              Continuar com Google
-            </Button>
-
-            <div className="relative">
-              <Separator className="bg-white/10" />
-              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0a0a0a] px-3 text-xs uppercase tracking-wider text-white/40">
-                ou com e-mail
-              </span>
-            </div>
-
-            <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-white/5">
-                <TabsTrigger value="login" className="data-[state=active]:bg-gradient-brand data-[state=active]:text-white">Entrar</TabsTrigger>
-                <TabsTrigger value="signup" className="data-[state=active]:bg-gradient-brand data-[state=active]:text-white">Criar conta</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="login" className="space-y-4 mt-4">
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="login-email" className="text-white/80">E-mail</Label>
-                    <Input
-                      id="login-email"
-                      type="email"
-                      placeholder="seu@email.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="login-password" className="text-white/80">Senha</Label>
-                    <Input
-                      id="login-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
-                    />
-                  </div>
-                  <Button type="submit" className="w-full h-11 bg-gradient-brand hover:opacity-90 text-white border-0" disabled={loading}>
-                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Entrar"}
-                  </Button>
-                </form>
-              </TabsContent>
-
-              <TabsContent value="signup" className="space-y-4 mt-4">
-                <form onSubmit={handleSignup} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name" className="text-white/80">Nome completo</Label>
-                    <Input
-                      id="signup-name"
-                      type="text"
-                      placeholder="Seu nome"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      required
-                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-white/80">E-mail</Label>
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      placeholder="seu@email.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password" className="text-white/80">Senha</Label>
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      placeholder="Mínimo 6 caracteres"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      minLength={6}
-                      className="border-white/15 bg-white/5 text-white placeholder:text-white/30"
-                    />
-                  </div>
-                  <Button type="submit" className="w-full h-11 bg-gradient-brand hover:opacity-90 text-white border-0" disabled={loading}>
-                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Criar conta"}
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
-            </div>
-
-            <p className="mt-6 text-center text-xs text-white/40">
-              Ao continuar, você concorda com os Termos de Uso e a Política de Privacidade da Sincro.
+        {section === "sobre" && (
+          <section className="mx-auto max-w-4xl py-12">
+            <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Sobre</span>
+            <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
+              Sincronia entre <span className="text-gradient-brand">estratégia</span> e criação.
+            </h2>
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/70">
+              A Sincro nasceu para resolver o caos do conteúdo. Reunimos planejamento, calendário editorial, banco de ideias e inteligência artificial em uma única plataforma — para que estrategistas, criadores e agências possam focar no que realmente importa: criar.
             </p>
-          </div>
-        </div>
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+              {[
+                { t: "Estratégia", d: "Planejamento editorial estruturado por cliente." },
+                { t: "Criação", d: "Sugestões de IA contextualizadas com sua marca." },
+                { t: "Gestão", d: "Calendário, quadro e métricas em um só lugar." },
+              ].map((b) => (
+                <div key={b.t} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
+                  <h3 className="text-lg font-semibold text-white">{b.t}</h3>
+                  <p className="mt-2 text-sm text-white/60">{b.d}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {section === "planos" && (
+          <section className="mx-auto max-w-6xl py-12">
+            <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Planos</span>
+            <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
+              Escolha o ritmo da<br />sua <span className="text-gradient-brand">operação</span>.
+            </h2>
+            <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+              {plans.map((p) => (
+                <div
+                  key={p.name}
+                  className={`relative rounded-2xl border p-8 backdrop-blur-xl ${p.highlight ? "border-[#f2540f]/60 bg-white/[0.06]" : "border-white/10 bg-white/[0.03]"}`}
+                >
+                  {p.highlight && (
+                    <span className="absolute -top-3 left-6 rounded-full bg-gradient-brand px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-white">
+                      Mais popular
+                    </span>
+                  )}
+                  <h3 className="text-xl font-semibold text-white">{p.name}</h3>
+                  <div className="mt-4 flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-white">{p.price}</span>
+                    <span className="text-sm text-white/50">{p.period}</span>
+                  </div>
+                  <p className="mt-3 text-sm text-white/60">{p.desc}</p>
+                  <ul className="mt-6 space-y-3">
+                    {p.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-white/80">
+                        <Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    onClick={() => setAuthOpen(true)}
+                    className={`mt-8 w-full rounded-full ${p.highlight ? "bg-gradient-brand text-white" : "bg-white text-black hover:bg-white/90"}`}
+                  >
+                    {p.cta}
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {section === "faq" && (
+          <section className="mx-auto max-w-3xl py-12">
+            <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">FAQ</span>
+            <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
+              Perguntas <span className="text-gradient-brand">frequentes</span>.
+            </h2>
+            <Accordion type="single" collapsible className="mt-10">
+              {faqs.map((f, i) => (
+                <AccordionItem key={i} value={`item-${i}`} className="border-white/10">
+                  <AccordionTrigger className="text-left text-base text-white hover:no-underline">
+                    {f.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm leading-relaxed text-white/60">
+                    {f.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </section>
+        )}
       </main>
+
+      {/* Auth modal */}
+      <Dialog open={authOpen} onOpenChange={setAuthOpen}>
+        <DialogContent className="max-w-md border-white/10 bg-[#0a0a0a]/95 p-0 text-white backdrop-blur-2xl">
+          <div className="p-6 sm:p-8">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-semibold tracking-tight text-white">Acesse a plataforma</DialogTitle>
+            </DialogHeader>
+            <p className="mt-1 text-sm text-white/50">Entre ou crie sua conta para começar.</p>
+
+            <div className="mt-6 space-y-4">
+              <Button
+                variant="outline"
+                className="w-full h-11 gap-3 border-white/15 bg-white/5 text-white hover:bg-white/10 hover:text-white"
+                onClick={handleGoogleLogin}
+                disabled={loading}
+              >
+                <svg className="h-5 w-5" viewBox="0 0 24 24">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+                </svg>
+                Continuar com Google
+              </Button>
+
+              <div className="relative">
+                <Separator className="bg-white/10" />
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0a0a0a] px-3 text-xs uppercase tracking-wider text-white/40">
+                  ou com e-mail
+                </span>
+              </div>
+
+              <Tabs defaultValue="login" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 bg-white/5">
+                  <TabsTrigger value="login" className="data-[state=active]:bg-gradient-brand data-[state=active]:text-white">Entrar</TabsTrigger>
+                  <TabsTrigger value="signup" className="data-[state=active]:bg-gradient-brand data-[state=active]:text-white">Criar conta</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="login" className="space-y-4 mt-4">
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="login-email" className="text-white/80">E-mail</Label>
+                      <Input id="login-email" type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="border-white/15 bg-white/5 text-white placeholder:text-white/30" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="login-password" className="text-white/80">Senha</Label>
+                      <Input id="login-password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required className="border-white/15 bg-white/5 text-white placeholder:text-white/30" />
+                    </div>
+                    <Button type="submit" className="w-full h-11 bg-gradient-brand hover:opacity-90 text-white border-0" disabled={loading}>
+                      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Entrar"}
+                    </Button>
+                  </form>
+                </TabsContent>
+
+                <TabsContent value="signup" className="space-y-4 mt-4">
+                  <form onSubmit={handleSignup} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-name" className="text-white/80">Nome completo</Label>
+                      <Input id="signup-name" type="text" placeholder="Seu nome" value={fullName} onChange={(e) => setFullName(e.target.value)} required className="border-white/15 bg-white/5 text-white placeholder:text-white/30" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-email" className="text-white/80">E-mail</Label>
+                      <Input id="signup-email" type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="border-white/15 bg-white/5 text-white placeholder:text-white/30" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password" className="text-white/80">Senha</Label>
+                      <Input id="signup-password" type="password" placeholder="Mínimo 6 caracteres" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="border-white/15 bg-white/5 text-white placeholder:text-white/30" />
+                    </div>
+                    <Button type="submit" className="w-full h-11 bg-gradient-brand hover:opacity-90 text-white border-0" disabled={loading}>
+                      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Criar conta"}
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
