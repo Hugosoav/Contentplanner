@@ -127,19 +127,28 @@
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid hsl(0 0% 100% / 0.08);
   }
-  .bg-aurora-orange {
-    background:
-      radial-gradient(60% 80% at 85% 50%, rgba(242, 84, 15, 0.85) 0%, rgba(242, 84, 15, 0) 60%),
-      radial-gradient(45% 70% at 95% 35%, rgba(245, 166, 35, 0.7) 0%, rgba(245, 166, 35, 0) 65%),
-      radial-gradient(55% 75% at 70% 75%, rgba(233, 30, 99, 0.35) 0%, rgba(233, 30, 99, 0) 70%),
-      radial-gradient(40% 60% at 100% 10%, rgba(255, 200, 120, 0.4) 0%, rgba(255, 200, 120, 0) 70%);
-    background-size: 200% 200%;
-    animation: aurora-shift 18s ease-in-out infinite;
-    filter: blur(4px);
+  .aurora-pan {
+    animation: aurora-pan 22s ease-in-out infinite alternate;
+    transform-origin: 80% 50%;
   }
-  @keyframes aurora-shift {
-    0%   { background-position: 0% 50%, 100% 0%, 50% 100%, 100% 0%; }
-    50%  { background-position: 100% 50%, 0% 100%, 100% 0%, 0% 100%; }
-    100% { background-position: 0% 50%, 100% 0%, 50% 100%, 100% 0%; }
+  @keyframes aurora-pan {
+    0%   { transform: scale(1.05) translate(0, 0); filter: saturate(1.15) brightness(1); }
+    50%  { transform: scale(1.12) translate(-2%, -1%); filter: saturate(1.35) brightness(1.08); }
+    100% { transform: scale(1.08) translate(1%, 1%); filter: saturate(1.25) brightness(1.04); }
+  }
+  .aurora-glow {
+    animation: aurora-glow 9s ease-in-out infinite;
+  }
+  @keyframes aurora-glow {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 0.9; }
+  }
+  .grain-overlay {
+    background-image:
+      radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+      radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1px 1px;
+    mix-blend-mode: overlay;
   }
 }
