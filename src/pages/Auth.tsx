@@ -13,6 +13,9 @@ import { toast } from "sonner";
 import { Loader2, Check, Menu } from "lucide-react";
 import sincroLogoWhite from "@/assets/sincro-logo-white.png.asset.json";
 import sincroBgAurora from "@/assets/sincro-bg-aurora.png.asset.json";
+import previewCalendar from "@/assets/sincro-preview-calendar.png.asset.json";
+import previewBoard from "@/assets/sincro-preview-board.png.asset.json";
+import previewAI from "@/assets/sincro-preview-ai.png.asset.json";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -244,25 +247,115 @@ const Auth = () => {
         )}
 
         {section === "sobre" && (
-          <section className="mx-auto max-w-4xl py-12">
-            <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Sobre</span>
-            <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
-              Sincronia entre <span className="text-gradient-brand">estratégia</span> e criação.
-            </h2>
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/70">
-              A Sincro nasceu para resolver o caos do conteúdo. Reunimos planejamento, calendário editorial, banco de ideias e inteligência artificial em uma única plataforma — para que estrategistas, criadores e agências possam focar no que realmente importa: criar.
-            </p>
-            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
-              {[
-                { t: "Estratégia", d: "Planejamento editorial estruturado por cliente." },
-                { t: "Criação", d: "Sugestões de IA contextualizadas com sua marca." },
-                { t: "Gestão", d: "Calendário, quadro e métricas em um só lugar." },
-              ].map((b) => (
-                <div key={b.t} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
-                  <h3 className="text-lg font-semibold text-white">{b.t}</h3>
-                  <p className="mt-2 text-sm text-white/60">{b.d}</p>
+          <section className="mx-auto max-w-6xl py-12 space-y-24">
+            {/* Intro */}
+            <div>
+              <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Sobre</span>
+              <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
+                Sincronia entre <span className="text-gradient-brand">estratégia</span> e criação.
+              </h2>
+              <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/70">
+                A Sincro nasceu para resolver o caos do conteúdo. Reunimos planejamento, calendário editorial, banco de ideias e inteligência artificial em uma única plataforma — para que estrategistas, criadores e agências possam focar no que realmente importa: criar.
+              </p>
+            </div>
+
+            {/* For whom */}
+            <div>
+              <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Para quem</span>
+              <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
+                Feita para <span className="text-gradient-brand">agências</span> e <span className="text-gradient-brand">influenciadores</span>.
+              </h3>
+              <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl">
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">Agências de marketing</span>
+                  <h4 className="mt-3 text-2xl font-semibold text-white">Gerencie múltiplas marcas sem se perder</h4>
+                  <p className="mt-3 text-sm leading-relaxed text-white/60">
+                    Dashboards isolados por cliente, calendário editorial compartilhado com o time e sugestões de IA calibradas para cada posicionamento. Escale a operação sem multiplicar planilhas.
+                  </p>
+                  <ul className="mt-6 space-y-2 text-sm text-white/80">
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Múltiplos clientes em contas separadas</li>
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Fluxo de aprovação e status por conteúdo</li>
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Pautas geradas com base no briefing</li>
+                  </ul>
                 </div>
-              ))}
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl">
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">Influenciadores e criadores</span>
+                  <h4 className="mt-3 text-2xl font-semibold text-white">Constância criativa sem travar no branco</h4>
+                  <p className="mt-3 text-sm leading-relaxed text-white/60">
+                    Banco de ideias sempre cheio, calendário visual para nunca perder o ritmo e ganchos prontos para reels, carrosséis e stories. Mais criação, menos improviso.
+                  </p>
+                  <ul className="mt-6 space-y-2 text-sm text-white/80">
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Ideias organizadas por pilar de conteúdo</li>
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Sugestões de IA com tom de voz próprio</li>
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Calendário e quadro em uma tela só</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Platform preview */}
+            <div>
+              <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">A plataforma</span>
+              <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
+                Tudo em um só <span className="text-gradient-brand">fluxo</span>.
+              </h3>
+
+              <div className="mt-12 space-y-16">
+                {[
+                  {
+                    tag: "Calendário editorial",
+                    title: "Planeje o mês inteiro em uma visão só",
+                    desc: "Enxergue publicações, agendamentos e rascunhos por semana. Arraste para reagendar e mantenha o time alinhado com o cliente.",
+                    img: previewCalendar.url,
+                  },
+                  {
+                    tag: "Quadro de conteúdos",
+                    title: "Do rascunho ao publicado, sem fricção",
+                    desc: "Kanban com estágios de Ideia, Rascunho, Agendado e Publicado. Acompanhe o status de cada peça sem sair da tela.",
+                    img: previewBoard.url,
+                    reverse: true,
+                  },
+                  {
+                    tag: "Sugestões de IA",
+                    title: "Ideias novas com o tom da marca",
+                    desc: "A IA lê o posicionamento, público-alvo e objetivos do cliente para sugerir pautas prontas — com gancho, formato e data recomendados.",
+                    img: previewAI.url,
+                  },
+                ].map((f) => (
+                  <div key={f.tag} className={`grid grid-cols-1 items-center gap-10 md:grid-cols-2 ${f.reverse ? "md:[&>*:first-child]:order-2" : ""}`}>
+                    <div>
+                      <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">{f.tag}</span>
+                      <h4 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">{f.title}</h4>
+                      <p className="mt-3 text-sm leading-relaxed text-white/60 sm:text-base">{f.desc}</p>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute -inset-4 rounded-3xl bg-gradient-brand opacity-30 blur-2xl" />
+                      <img
+                        src={f.img}
+                        alt={f.title}
+                        loading="lazy"
+                        className="relative w-full rounded-2xl border border-white/10 shadow-2xl"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-xl sm:p-14">
+              <h3 className="font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
+                Pronto para <span className="text-gradient-brand">sincronizar</span>?
+              </h3>
+              <p className="mx-auto mt-4 max-w-xl text-sm text-white/60 sm:text-base">
+                Comece grátis, sem cartão. Em minutos você já tem o primeiro cliente e as primeiras pautas prontas.
+              </p>
+              <Button
+                onClick={() => setAuthOpen(true)}
+                className="mt-8 h-12 rounded-full bg-white px-8 text-sm font-medium uppercase tracking-[0.2em] text-black hover:bg-white/90"
+              >
+                Criar minha conta
+              </Button>
             </div>
           </section>
         )}
