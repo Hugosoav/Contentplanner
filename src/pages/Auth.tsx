@@ -24,7 +24,6 @@ const Auth = () => {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
-  const [section, setSection] = useState<"home" | "sobre" | "planos" | "faq">("home");
   const [authOpen, setAuthOpen] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
 
@@ -94,11 +93,16 @@ const Auth = () => {
     );
   }
 
-  const navItems: { id: typeof section; label: string }[] = [
+  const navItems: { id: string; label: string }[] = [
     { id: "faq", label: "FAQ" },
     { id: "planos", label: "PLANOS" },
     { id: "sobre", label: "SOBRE" },
   ];
+
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const plans = [
     {
@@ -136,8 +140,9 @@ const Auth = () => {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#050505] text-white">
-      {/* Animated aurora background image */}
+    <div className="relative min-h-screen bg-black text-white">
+      {/* HERO wrapper with aurora background */}
+      <div className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <img
           src={sincroBgAurora.url}
@@ -154,21 +159,22 @@ const Auth = () => {
       </div>
       {/* Left fade for text legibility */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/85 via-30% to-transparent" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050505]/70 via-transparent to-transparent" />
+      {/* Fade to black at the bottom for smooth transition into the dark section */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent to-black" />
       {/* Subtle grain */}
       <div className="pointer-events-none absolute inset-0 grain-overlay opacity-40" />
 
       {/* Top bar */}
       <header className="relative z-20 flex items-center justify-between px-6 py-6 lg:px-12">
-        <button onClick={() => setSection("home")} className="flex items-center">
+        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="flex items-center">
           <img src={sincroLogoWhite.url} alt="Sincro" className="h-8 w-auto" />
         </button>
         <nav className="hidden items-center gap-10 text-xs font-medium uppercase tracking-[0.25em] text-white/70 md:flex">
           {navItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => setSection(item.id)}
-              className={`transition-colors hover:text-white ${section === item.id ? "text-white" : ""}`}
+              onClick={() => scrollTo(item.id)}
+              className="transition-colors hover:text-white"
             >
               {item.label}
             </button>
@@ -195,7 +201,7 @@ const Auth = () => {
           {navItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => { setSection(item.id); setMobileNav(false); }}
+              onClick={() => { scrollTo(item.id); setMobileNav(false); }}
               className="text-left text-sm uppercase tracking-[0.2em] text-white/80"
             >
               {item.label}
@@ -210,9 +216,8 @@ const Auth = () => {
         </div>
       )}
 
-      {/* Main content */}
-      <main className="relative z-10 px-6 pb-20 pt-6 lg:px-16">
-        {section === "home" && (
+      {/* HERO */}
+      <main className="relative z-10 px-6 pb-32 pt-6 lg:px-16">
           <section className="grid min-h-[calc(100vh-12rem)] grid-cols-1 items-center">
             <div className="max-w-3xl">
               <h1 className="font-heading text-5xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
@@ -231,7 +236,7 @@ const Auth = () => {
                   Começar agora
                 </Button>
                 <button
-                  onClick={() => setSection("sobre")}
+                  onClick={() => scrollTo("sobre")}
                   className="text-xs uppercase tracking-[0.25em] text-white/60 hover:text-white"
                 >
                   Saiba mais →
@@ -244,10 +249,26 @@ const Auth = () => {
               </div>
             </div>
           </section>
-        )}
+      </main>
+      </div>
 
-        {section === "sobre" && (
-          <section className="mx-auto max-w-6xl py-12 space-y-24">
+      {/* DARK CONTENT — Sobre, Planos, FAQ combinados */}
+      <div className="relative bg-black">
+        {/* Subtle radial vignette for depth */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(242,84,15,0.08),transparent_60%)]" />
+        {/* Faint grid pattern */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+
+        <div className="relative z-10 px-6 py-24 lg:px-16">
+          {/* SOBRE */}
+          <section id="sobre" className="mx-auto max-w-6xl space-y-24 scroll-mt-24">
             {/* Intro */}
             <div>
               <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Sobre</span>
@@ -341,27 +362,10 @@ const Auth = () => {
                 ))}
               </div>
             </div>
-
-            {/* CTA */}
-            <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-xl sm:p-14">
-              <h3 className="font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
-                Pronto para <span className="text-gradient-brand">sincronizar</span>?
-              </h3>
-              <p className="mx-auto mt-4 max-w-xl text-sm text-white/60 sm:text-base">
-                Comece grátis, sem cartão. Em minutos você já tem o primeiro cliente e as primeiras pautas prontas.
-              </p>
-              <Button
-                onClick={() => setAuthOpen(true)}
-                className="mt-8 h-12 rounded-full bg-white px-8 text-sm font-medium uppercase tracking-[0.2em] text-black hover:bg-white/90"
-              >
-                Criar minha conta
-              </Button>
-            </div>
           </section>
-        )}
 
-        {section === "planos" && (
-          <section className="mx-auto max-w-6xl py-12">
+          {/* PLANOS */}
+          <section id="planos" className="mx-auto mt-32 max-w-6xl scroll-mt-24">
             <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Planos</span>
             <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
               Escolha o ritmo da<br />sua <span className="text-gradient-brand">operação</span>.
@@ -401,10 +405,9 @@ const Auth = () => {
               ))}
             </div>
           </section>
-        )}
 
-        {section === "faq" && (
-          <section className="mx-auto max-w-3xl py-12">
+          {/* FAQ */}
+          <section id="faq" className="mx-auto mt-32 max-w-3xl scroll-mt-24">
             <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">FAQ</span>
             <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
               Perguntas <span className="text-gradient-brand">frequentes</span>.
@@ -422,8 +425,24 @@ const Auth = () => {
               ))}
             </Accordion>
           </section>
-        )}
-      </main>
+
+          {/* CTA final */}
+          <div className="mx-auto mt-32 max-w-4xl rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-xl sm:p-14">
+            <h3 className="font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
+              Pronto para <span className="text-gradient-brand">sincronizar</span>?
+            </h3>
+            <p className="mx-auto mt-4 max-w-xl text-sm text-white/60 sm:text-base">
+              Comece grátis, sem cartão. Em minutos você já tem o primeiro cliente e as primeiras pautas prontas.
+            </p>
+            <Button
+              onClick={() => setAuthOpen(true)}
+              className="mt-8 h-12 rounded-full bg-white px-8 text-sm font-medium uppercase tracking-[0.2em] text-black hover:bg-white/90"
+            >
+              Criar minha conta
+            </Button>
+          </div>
+        </div>
+      </div>
 
       {/* Auth modal */}
       <Dialog open={authOpen} onOpenChange={setAuthOpen}>
