@@ -353,13 +353,13 @@ const Auth = () => {
                       <h4 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">{f.title}</h4>
                       <p className="mt-3 text-sm leading-relaxed text-white/60 sm:text-base">{f.desc}</p>
                     </div>
-                    <div className="relative">
-                      <div className="absolute -inset-4 rounded-3xl bg-gradient-brand opacity-30 blur-2xl" />
+                    <div className="group relative [perspective:1200px]">
+                      <div className="absolute -inset-4 rounded-3xl bg-gradient-brand opacity-30 blur-2xl transition-all duration-500 group-hover:opacity-70 group-hover:blur-3xl" />
                       <img
                         src={f.img}
                         alt={f.title}
                         loading="lazy"
-                        className="relative w-full rounded-2xl border border-white/10 shadow-2xl"
+                        className="relative w-full rounded-2xl border border-white/10 shadow-2xl transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-2 group-hover:scale-[1.03] group-hover:[transform:perspective(1200px)_rotateX(2deg)_rotateY(-3deg)_scale(1.03)]"
                       />
                     </div>
                   </div>
