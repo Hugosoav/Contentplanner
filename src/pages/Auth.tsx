@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "sonner";
 import { Loader2, Check, Menu } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import sincroLogoWhite from "@/assets/sincro-logo-white.png.asset.json";
 import sincroBgAurora from "@/assets/sincro-bg-aurora.png.asset.json";
 import previewCalendar from "@/assets/sincro-preview-calendar.png.asset.json";
@@ -26,6 +27,8 @@ const Auth = () => {
   const [checkingSession, setCheckingSession] = useState(true);
   const [authOpen, setAuthOpen] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
+
+  useScrollReveal([checkingSession]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -154,8 +157,8 @@ const Auth = () => {
       {/* Saturated color washes for extra punch */}
       <div className="pointer-events-none absolute inset-0 mix-blend-screen">
         <div className="aurora-glow absolute -top-40 right-[-10%] h-[60rem] w-[60rem] rounded-full bg-[#ff5a1f] opacity-60 blur-[160px]" />
-        <div className="aurora-glow absolute top-1/3 right-0 h-[40rem] w-[40rem] rounded-full bg-[#ffb347] opacity-50 blur-[140px]" style={{ animationDelay: "-3s" }} />
-        <div className="aurora-glow absolute bottom-[-20%] right-1/4 h-[36rem] w-[36rem] rounded-full bg-[#e91e63] opacity-30 blur-[160px]" style={{ animationDelay: "-6s" }} />
+        <div className="aurora-glow absolute top-1/3 right-0 h-[40rem] w-[40rem] rounded-full bg-[#ffb347] opacity-55 blur-[140px]" style={{ animationDelay: "-3s" }} />
+        <div className="aurora-glow absolute bottom-[-20%] right-1/4 h-[36rem] w-[36rem] rounded-full bg-[#ff7a00] opacity-40 blur-[160px]" style={{ animationDelay: "-6s" }} />
       </div>
       {/* Left fade for text legibility */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/85 via-30% to-transparent" />
@@ -270,7 +273,7 @@ const Auth = () => {
           {/* SOBRE */}
           <section id="sobre" className="mx-auto max-w-6xl space-y-24 scroll-mt-24">
             {/* Intro */}
-            <div>
+            <div className="reveal">
               <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Sobre</span>
               <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
                 Sincronia entre <span className="text-gradient-brand">estratégia</span> e criação.
@@ -281,7 +284,7 @@ const Auth = () => {
             </div>
 
             {/* For whom */}
-            <div>
+            <div className="reveal">
               <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Para quem</span>
               <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
                 Feita para <span className="text-gradient-brand">agências</span> e <span className="text-gradient-brand">influenciadores</span>.
@@ -315,7 +318,7 @@ const Auth = () => {
             </div>
 
             {/* Platform preview */}
-            <div>
+            <div className="reveal">
               <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">A plataforma</span>
               <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
                 Tudo em um só <span className="text-gradient-brand">fluxo</span>.
@@ -343,7 +346,7 @@ const Auth = () => {
                     img: previewAI.url,
                   },
                 ].map((f) => (
-                  <div key={f.tag} className={`grid grid-cols-1 items-center gap-10 md:grid-cols-2 ${f.reverse ? "md:[&>*:first-child]:order-2" : ""}`}>
+                  <div key={f.tag} className={`reveal grid grid-cols-1 items-center gap-10 md:grid-cols-2 ${f.reverse ? "md:[&>*:first-child]:order-2" : ""}`}>
                     <div>
                       <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">{f.tag}</span>
                       <h4 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">{f.title}</h4>
@@ -365,7 +368,7 @@ const Auth = () => {
           </section>
 
           {/* PLANOS */}
-          <section id="planos" className="mx-auto mt-32 max-w-6xl scroll-mt-24">
+          <section id="planos" className="reveal mx-auto mt-32 max-w-6xl scroll-mt-24">
             <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Planos</span>
             <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
               Escolha o ritmo da<br />sua <span className="text-gradient-brand">operação</span>.
@@ -407,7 +410,7 @@ const Auth = () => {
           </section>
 
           {/* FAQ */}
-          <section id="faq" className="mx-auto mt-32 max-w-3xl scroll-mt-24">
+          <section id="faq" className="reveal mx-auto mt-32 max-w-3xl scroll-mt-24">
             <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">FAQ</span>
             <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
               Perguntas <span className="text-gradient-brand">frequentes</span>.
@@ -427,7 +430,7 @@ const Auth = () => {
           </section>
 
           {/* CTA final */}
-          <div className="mx-auto mt-32 max-w-4xl rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-xl sm:p-14">
+          <div className="reveal mx-auto mt-32 max-w-4xl rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-xl sm:p-14">
             <h3 className="font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
               Pronto para <span className="text-gradient-brand">sincronizar</span>?
             </h3>
