@@ -156,9 +156,10 @@ const Auth = () => {
       </div>
       {/* Saturated color washes for extra punch */}
       <div className="pointer-events-none absolute inset-0 mix-blend-screen">
-        <div className="aurora-glow absolute -top-40 right-[-10%] h-[60rem] w-[60rem] rounded-full bg-[#ff5a1f] opacity-60 blur-[160px]" />
-        <div className="aurora-glow absolute top-1/3 right-0 h-[40rem] w-[40rem] rounded-full bg-[#ffb347] opacity-55 blur-[140px]" style={{ animationDelay: "-3s" }} />
-        <div className="aurora-glow absolute bottom-[-20%] right-1/4 h-[36rem] w-[36rem] rounded-full bg-[#ff7a00] opacity-40 blur-[160px]" style={{ animationDelay: "-6s" }} />
+        <div className="aurora-glow absolute -top-40 right-[-10%] h-[60rem] w-[60rem] rounded-full bg-[#ff5a1f] blur-[160px]" />
+        <div className="aurora-glow aurora-drift absolute top-1/4 right-0 h-[40rem] w-[40rem] rounded-full bg-[#ffb347] blur-[140px]" style={{ animationDelay: "-3s" }} />
+        <div className="aurora-glow absolute bottom-[-20%] right-1/4 h-[36rem] w-[36rem] rounded-full bg-[#ff7a00] blur-[160px]" style={{ animationDelay: "-5s" }} />
+        <div className="aurora-drift absolute top-1/2 left-1/3 h-[30rem] w-[30rem] rounded-full bg-[#ffa042] opacity-40 blur-[130px]" style={{ animationDelay: "-2s" }} />
       </div>
       {/* Left fade for text legibility */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/85 via-30% to-transparent" />
