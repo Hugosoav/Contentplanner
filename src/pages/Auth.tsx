@@ -258,7 +258,7 @@ const Auth = () => {
       {/* DARK CONTENT — Sobre, Planos, FAQ combinados */}
       <div className="relative bg-black">
         {/* Subtle radial vignette for depth */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(242,84,15,0.08),transparent_60%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,138,31,0.10),transparent_60%)]" />
         {/* Faint grid pattern */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.04]"
