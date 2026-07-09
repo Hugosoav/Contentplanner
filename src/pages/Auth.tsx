@@ -12,6 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { toast } from "sonner";
 import { Loader2, Check, Menu } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import HorizontalFeatures from "@/components/HorizontalFeatures";
 import sincroLogoWhite from "@/assets/sincro-logo-white.png.asset.json";
 import sincroBgAurora from "@/assets/sincro-bg-aurora.png.asset.json";
 import previewCalendar from "@/assets/sincro-preview-calendar.png.asset.json";
@@ -324,49 +325,35 @@ const Auth = () => {
               <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
                 Tudo em um só <span className="text-gradient-brand">fluxo</span>.
               </h3>
-
-              <div className="mt-12 space-y-16">
-                {[
-                  {
-                    tag: "Calendário editorial",
-                    title: "Planeje o mês inteiro em uma visão só",
-                    desc: "Enxergue publicações, agendamentos e rascunhos por semana. Arraste para reagendar e mantenha o time alinhado com o cliente.",
-                    img: previewCalendar.url,
-                  },
-                  {
-                    tag: "Quadro de conteúdos",
-                    title: "Do rascunho ao publicado, sem fricção",
-                    desc: "Kanban com estágios de Ideia, Rascunho, Agendado e Publicado. Acompanhe o status de cada peça sem sair da tela.",
-                    img: previewBoard.url,
-                    reverse: true,
-                  },
-                  {
-                    tag: "Sugestões de IA",
-                    title: "Ideias novas com o tom da marca",
-                    desc: "A IA lê o posicionamento, público-alvo e objetivos do cliente para sugerir pautas prontas — com gancho, formato e data recomendados.",
-                    img: previewAI.url,
-                  },
-                ].map((f) => (
-                  <div key={f.tag} className={`reveal grid grid-cols-1 items-center gap-10 md:grid-cols-2 ${f.reverse ? "md:[&>*:first-child]:order-2" : ""}`}>
-                    <div>
-                      <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">{f.tag}</span>
-                      <h4 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">{f.title}</h4>
-                      <p className="mt-3 text-sm leading-relaxed text-white/60 sm:text-base">{f.desc}</p>
-                    </div>
-                    <div className="group relative [perspective:1200px]">
-                      <div className="absolute -inset-4 rounded-3xl bg-gradient-brand opacity-30 blur-2xl transition-all duration-500 group-hover:opacity-70 group-hover:blur-3xl" />
-                      <img
-                        src={f.img}
-                        alt={f.title}
-                        loading="lazy"
-                        className="relative w-full rounded-2xl border border-white/10 shadow-2xl transition-transform duration-500 ease-out will-change-transform group-hover:-translate-y-2 group-hover:scale-[1.03] group-hover:[transform:perspective(1200px)_rotateX(2deg)_rotateY(-3deg)_scale(1.03)]"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <p className="mt-4 text-sm text-white/40">Role para explorar →</p>
             </div>
           </section>
+
+          {/* Horizontal scroll features (full-bleed) */}
+          <div className="-mx-6 mt-12 lg:-mx-16">
+            <HorizontalFeatures
+              features={[
+                {
+                  tag: "Calendário editorial",
+                  title: "Planeje o mês inteiro em uma visão só",
+                  desc: "Enxergue publicações, agendamentos e rascunhos por semana. Arraste para reagendar e mantenha o time alinhado com o cliente.",
+                  img: previewCalendar.url,
+                },
+                {
+                  tag: "Quadro de conteúdos",
+                  title: "Do rascunho ao publicado, sem fricção",
+                  desc: "Kanban com estágios de Ideia, Rascunho, Agendado e Publicado. Acompanhe o status de cada peça sem sair da tela.",
+                  img: previewBoard.url,
+                },
+                {
+                  tag: "Sugestões de IA",
+                  title: "Ideias novas com o tom da marca",
+                  desc: "A IA lê o posicionamento, público-alvo e objetivos do cliente para sugerir pautas prontas — com gancho, formato e data recomendados.",
+                  img: previewAI.url,
+                },
+              ]}
+            />
+          </div>
 
           {/* PLANOS */}
           <section id="planos" className="reveal mx-auto mt-32 max-w-6xl scroll-mt-24">
