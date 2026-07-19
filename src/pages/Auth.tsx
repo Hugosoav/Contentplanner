@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { Loader2, Check, Menu } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import HorizontalFeatures from "@/components/HorizontalFeatures";
+import AudienceGallery from "@/components/AudienceGallery";
 import sincroLogoWhite from "@/assets/sincro-logo-white.png.asset.json";
 import sincroBgAurora from "@/assets/sincro-bg-aurora.png.asset.json";
 import previewCalendar from "@/assets/sincro-preview-calendar.png.asset.json";
@@ -316,6 +317,11 @@ const Auth = () => {
                     <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Calendário e quadro em uma tela só</li>
                   </ul>
                 </div>
+              </div>
+
+              {/* Immersive audience gallery */}
+              <div className="mt-16">
+                <AudienceGallery />
               </div>
             </div>
 
