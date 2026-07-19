@@ -329,8 +329,8 @@ const Auth = () => {
             </div>
           </section>
 
-          {/* Horizontal scroll features (full-bleed) */}
-          <div className="-mx-6 mt-12 lg:-mx-16">
+          {/* Stacked feature cards (full-bleed) */}
+          <div className="-mx-6 mt-20 lg:-mx-16">
             <HorizontalFeatures
               features={[
                 {
