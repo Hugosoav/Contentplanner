@@ -73,7 +73,7 @@ const HorizontalFeatures = ({ features }: Props) => {
           return (
             <div
               key={f.tag}
-              className="absolute inset-0 flex items-center justify-center px-6 lg:px-16"
+              className="absolute inset-0 flex items-center justify-center px-5 lg:px-16"
               style={{
                 zIndex: i + 1,
                 transform: `translate3d(0, ${translateY}%, 0) scale(${scale})`,
@@ -82,10 +82,9 @@ const HorizontalFeatures = ({ features }: Props) => {
                 willChange: "transform, opacity",
               }}
             >
-              <div className="relative w-full max-w-6xl rounded-3xl border border-white/10 bg-[#0b0b0b]/85 p-6 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:p-10">
-                <div className="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-brand opacity-20 blur-2xl" />
+              <div className="relative w-full max-w-6xl rounded-3xl border border-white/10 bg-[#0a0a0a] p-7 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)] sm:p-12">
                 <div
-                  className={`relative grid grid-cols-1 items-center gap-10 md:grid-cols-2 ${
+                  className={`relative grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-14 ${
                     flip ? "md:[&>*:first-child]:order-2" : ""
                   }`}
                 >
@@ -95,15 +94,15 @@ const HorizontalFeatures = ({ features }: Props) => {
                       <span className="h-px w-8 bg-[#ff8a1f]/60" />
                       <span>{f.tag}</span>
                     </div>
-                    <h4 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+                    <h4 className="mt-5 text-3xl font-semibold text-white sm:text-4xl">
                       {f.title}
                     </h4>
-                    <p className="mt-4 text-base leading-relaxed text-white/60">
+                    <p className="mt-5 text-base leading-relaxed text-white/60">
                       {f.desc}
                     </p>
                   </div>
                   <div className="group relative [perspective:1200px]">
-                    <div className="absolute -inset-4 rounded-3xl bg-gradient-brand opacity-40 blur-2xl transition-all duration-500 group-hover:opacity-70 group-hover:blur-3xl" />
+                    <div className="absolute -inset-3 rounded-3xl bg-gradient-brand opacity-30 transition-all duration-500 group-hover:opacity-50" />
                     <img
                       src={f.img}
                       alt={f.title}
