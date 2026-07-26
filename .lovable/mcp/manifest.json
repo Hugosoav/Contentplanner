@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://xaitymzbunmibcctvlrq.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "sincro-mcp",
+      "version": "0.1.0",
+      "title": "Sincro"
+    },
+    "tools": [
+      {
+        "name": "list_clients",
+        "title": "List clients",
+        "description": "List the content dashboards (clients) that belong to the signed-in user.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_content",
+        "title": "List scheduled content",
+        "description": "List planned content items for the signed-in user, optionally filtered by client, status or date range (YYYY-MM-DD).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "client_id": {
+              "type": "string",
+              "description": "Only return content for this client id."
+            },
+            "status": {
+              "type": "string",
+              "description": "Filter by status: draft, scheduled, published or idea."
+            },
+            "from": {
+              "type": "string",
+              "description": "Earliest date, YYYY-MM-DD."
+            },
+            "to": {
+              "type": "string",
+              "description": "Latest date, YYYY-MM-DD."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_content",
+        "title": "Create content item",
+        "description": "Schedule a new content item on a client's calendar for the signed-in user.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "client_id": {
+              "type": "string",
+              "description": "Client id the content belongs to (see list_clients)."
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Content title."
+            },
+            "description": {
+              "type": "string",
+              "default": "",
+              "description": "Short brief or copy for the post."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "scheduled",
+                "published",
+                "idea"
+              ],
+              "default": "draft",
+              "description": "Workflow status."
+            },
+            "pillar": {
+              "type": "string",
+              "enum": [
+                "educativo",
+                "autoridade",
+                "engajamento",
+                "vendas",
+                "bastidores"
+              ],
+              "description": "Content pillar."
+            },
+            "platform": {
+              "type": "string",
+              "enum": [
+                "instagram",
+                "linkedin",
+                "tiktok",
+                "youtube",
+                "blog"
+              ],
+              "description": "Target platform."
+            },
+            "date": {
+              "type": "string",
+              "description": "Publish date, YYYY-MM-DD."
+            },
+            "time": {
+              "type": "string",
+              "description": "Publish time, HH:MM."
+            }
+          },
+          "required": [
+            "client_id",
+            "title",
+            "pillar",
+            "platform",
+            "date"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_ideas",
+        "title": "List saved ideas",
+        "description": "List the ideas saved in the idea bank for the signed-in user.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "client_id": {
+              "type": "string",
+              "description": "Only return ideas for this client id."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_idea",
+        "title": "Save idea",
+        "description": "Save a content idea to a client's idea bank for the signed-in user.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "client_id": {
+              "type": "string",
+              "description": "Client id the idea belongs to (see list_clients)."
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Idea title."
+            },
+            "description": {
+              "type": "string",
+              "default": "",
+              "description": "What the idea is about."
+            },
+            "pillar": {
+              "type": "string",
+              "enum": [
+                "educativo",
+                "autoridade",
+                "engajamento",
+                "vendas",
+                "bastidores"
+              ],
+              "description": "Content pillar."
+            },
+            "format": {
+              "type": "string",
+              "default": "",
+              "description": "Format, e.g. Reels, Carrossel, Artigo."
+            },
+            "hook": {
+              "type": "string",
+              "default": "",
+              "description": "Opening hook for the content."
+            }
+          },
+          "required": [
+            "client_id",
+            "title",
+            "pillar"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
