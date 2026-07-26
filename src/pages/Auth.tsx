@@ -32,23 +32,30 @@ const Auth = () => {
 
   useScrollReveal([checkingSession]);
 
+  // Preserve a same-origin relative redirect (used by the MCP OAuth consent flow).
+  const rawNext = new URLSearchParams(window.location.search).get("next");
+  const nextPath = rawNext && /^\/(?!\/)/.test(rawNext) ? rawNext : null;
+  const afterAuthUrl = nextPath ? window.location.origin + nextPath : window.location.origin;
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        navigate("/", { replace: true });
+        if (nextPath) window.location.replace(nextPath);
+        else navigate("/", { replace: true });
       }
       setCheckingSession(false);
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate("/", { replace: true });
+        if (nextPath) window.location.replace(nextPath);
+        else navigate("/", { replace: true });
       }
       setCheckingSession(false);
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, nextPath]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +75,7 @@ const Auth = () => {
       password,
       options: {
         data: { full_name: fullName },
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: afterAuthUrl,
       },
     });
     if (error) {
@@ -82,7 +89,9 @@ const Auth = () => {
   const handleGoogleLogin = async () => {
     setLoading(true);
     const { error } = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+      redirect_uri: nextPath
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(nextPath)}`
+        : window.location.origin,
     });
     if (error) {
       toast.error("Erro ao conectar com Google");
