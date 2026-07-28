@@ -143,7 +143,7 @@ const Index = () => {
 
       <main className="flex-1 overflow-auto relative w-full lg:w-auto">
         
-        <header className="sticky top-0 z-10 bg-background/70 backdrop-blur-xl border-b border-border px-4 sm:px-8 py-4">
+        <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl border-b border-border px-4 sm:px-8 py-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
               <button
@@ -154,40 +154,37 @@ const Index = () => {
                 <Menu className="w-5 h-5" />
               </button>
               {selectedClient && (
-                <div className="flex items-center gap-3 pr-2 sm:pr-4 sm:border-r border-border min-w-0">
-                  <div className="w-9 h-9 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center text-accent font-bold text-sm">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-md bg-secondary border border-border flex items-center justify-center text-foreground font-semibold text-xs">
                     {selectedClient.name.charAt(0).toUpperCase()}
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Cliente ativo</p>
-                    <p className="text-sm font-semibold text-foreground leading-tight truncate">{selectedClient.name}</p>
-                  </div>
+                  <p className="text-sm font-medium text-foreground truncate">{selectedClient.name}</p>
                 </div>
               )}
               <div className="relative hidden md:block">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
                   type="text"
-                  placeholder="Buscar conteúdos..."
-                  className="pl-10 pr-4 py-2 rounded-lg bg-secondary border border-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 w-72 transition-colors"
+                  placeholder="Buscar..."
+                  className="pl-9 pr-4 py-1.5 rounded-md bg-secondary/60 border border-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-border focus:bg-secondary w-64 transition-colors"
                 />
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => setShowTutorial(true)}
-                className="hidden sm:inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors"
+                className="hidden sm:inline-flex items-center gap-2 text-muted-foreground hover:text-foreground px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors"
               >
-                <Rocket className="w-4 h-4" />
+                <Rocket className="w-3.5 h-3.5" />
                 Tutorial
               </button>
               <button
                 onClick={() => { setEditingContent(null); setShowContentModal(true); }}
-                className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-3 sm:px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-accent/90 transition-colors shadow-sm"
+                className="inline-flex items-center gap-1.5 bg-foreground text-background px-3 py-1.5 rounded-md text-sm font-medium hover:bg-foreground/90 transition-colors"
                 disabled={noClients}
               >
-                <Plus className="w-4 h-4" />
-                <span className="hidden sm:inline">Novo Conteúdo</span>
+                <Plus className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Novo conteúdo</span>
                 <span className="sm:hidden">Novo</span>
               </button>
             </div>
