@@ -1,5 +1,5 @@
-import { type ContentItem, pillarColors, pillarLabels, statusLabels, platformLabels } from "@/lib/content-data";
-import { Clock, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { type ContentItem, pillarColors, pillarLabels, platformLabels } from "@/lib/content-data";
+import { Calendar, Clock, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
 interface ContentCardProps {
@@ -7,13 +7,6 @@ interface ContentCardProps {
   onEdit?: (item: ContentItem) => void;
   onDelete?: (id: string) => void;
 }
-
-const statusStyles: Record<string, string> = {
-  draft: "bg-muted text-muted-foreground",
-  scheduled: "bg-info/10 text-info",
-  published: "bg-success/10 text-success",
-  idea: "bg-warning/10 text-warning",
-};
 
 const ContentCard = ({ item, onEdit, onDelete }: ContentCardProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,12 +21,10 @@ const ContentCard = ({ item, onEdit, onDelete }: ContentCardProps) => {
   }, [menuOpen]);
 
   return (
-    <div className="group bg-card rounded-lg border border-border p-4 hover:shadow-md transition-all hover:border-accent/30 animate-fade-in relative">
-      <div className="flex items-start justify-between mb-3">
-        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide ${statusStyles[item.status]}`}>
-          {statusLabels[item.status]}
-        </span>
-        <div className="relative" ref={menuRef}>
+    <div className="group bg-card rounded-md border border-border p-3 hover:border-foreground/20 transition-colors relative">
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <h3 className="font-medium text-card-foreground text-sm leading-snug flex-1">{item.title}</h3>
+        <div className="relative -mt-0.5 -mr-0.5" ref={menuRef}>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground"
@@ -59,25 +50,28 @@ const ContentCard = ({ item, onEdit, onDelete }: ContentCardProps) => {
         </div>
       </div>
 
-      <h3 className="font-semibold text-card-foreground text-sm mb-1 leading-snug">{item.title}</h3>
-      <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{item.description}</p>
+      {item.description && (
+        <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{item.description}</p>
+      )}
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className={`w-2 h-2 rounded-full ${pillarColors[item.pillar]}`} />
-          <span className="text-[10px] text-muted-foreground font-medium">{pillarLabels[item.pillar]}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          {item.time && (
-            <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
-              <Clock className="w-3 h-3" />
-              {item.time}
-            </span>
-          )}
-          <span className="text-[10px] bg-secondary text-secondary-foreground px-1.5 py-0.5 rounded font-medium">
-            {platformLabels[item.platform]}
+      <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+        <span className="flex items-center gap-1.5" title={pillarLabels[item.pillar]}>
+          <span className={`w-1.5 h-1.5 rounded-full ${pillarColors[item.pillar]}`} />
+          {pillarLabels[item.pillar]}
+        </span>
+        <span className="flex items-center gap-1">
+          <Calendar className="w-3 h-3" />
+          {new Date(item.date).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}
+        </span>
+        {item.time && (
+          <span className="flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            {item.time}
           </span>
-        </div>
+        )}
+        <span className="ml-auto text-[10px] text-muted-foreground/80 uppercase tracking-wide">
+          {platformLabels[item.platform]}
+        </span>
       </div>
     </div>
   );
