@@ -10,20 +10,28 @@ const SectionNav = ({ sections }: { sections: NavSection[] }) => {
   const [active, setActive] = useState(sections[0]?.id ?? "");
 
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(visible.target.id);
-      },
-      { threshold: [0.25, 0.5], rootMargin: "-20% 0px -40% 0px" }
-    );
-    sections.forEach((s) => {
-      const el = document.getElementById(s.id);
-      if (el) io.observe(el);
-    });
-    return () => io.disconnect();
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const line = window.innerHeight * 0.35;
+      let current = sections[0]?.id ?? "";
+      sections.forEach((s) => {
+        const el = document.getElementById(s.id);
+        if (el && el.getBoundingClientRect().top <= line) current = s.id;
+      });
+      setActive(current);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [sections]);
 
   const go = (id: string) =>
