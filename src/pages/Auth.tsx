@@ -12,8 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { toast } from "sonner";
 import { Loader2, Check, Menu } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import HorizontalFeatures from "@/components/HorizontalFeatures";
-import AudienceGallery from "@/components/AudienceGallery";
+import PlatformDeck from "@/components/PlatformDeck";
 import sincroLogoWhite from "@/assets/sincro-logo-white.png.asset.json";
 import sincroBgAurora from "@/assets/sincro-bg-aurora.png.asset.json";
 import previewCalendar from "@/assets/sincro-preview-calendar.png.asset.json";
@@ -281,9 +280,9 @@ const Auth = () => {
           }}
         />
 
-        <div className="relative z-10 px-6 py-24 lg:px-16">
+        <div className="relative z-10 px-6 py-28 lg:px-16">
           {/* SOBRE */}
-          <section id="sobre" className="mx-auto max-w-6xl space-y-24 scroll-mt-24">
+          <section id="sobre" className="mx-auto max-w-6xl space-y-28 scroll-mt-24">
             {/* Intro */}
             <div className="reveal">
               <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">Sobre</span>
@@ -327,11 +326,6 @@ const Auth = () => {
                   </ul>
                 </div>
               </div>
-
-              {/* Immersive audience gallery */}
-              <div className="mt-16">
-                <AudienceGallery />
-              </div>
             </div>
 
             {/* Platform preview */}
@@ -340,35 +334,34 @@ const Auth = () => {
               <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
                 Tudo em um só <span className="text-gradient-brand">fluxo</span>.
               </h3>
-              <p className="mt-4 text-sm text-white/40">Role para explorar →</p>
+              <p className="mt-4 text-sm text-white/40">Clique em uma imagem para trazê-la à frente</p>
+
+              <div className="mt-14">
+                <PlatformDeck
+                  features={[
+                    {
+                      tag: "Calendário editorial",
+                      title: "Planeje o mês inteiro em uma visão só",
+                      desc: "Enxergue publicações, agendamentos e rascunhos por semana. Arraste para reagendar e mantenha o time alinhado com o cliente.",
+                      img: previewCalendar.url,
+                    },
+                    {
+                      tag: "Quadro de conteúdos",
+                      title: "Do rascunho ao publicado, sem fricção",
+                      desc: "Kanban com estágios de Ideia, Rascunho, Agendado e Publicado. Acompanhe o status de cada peça sem sair da tela.",
+                      img: previewBoard.url,
+                    },
+                    {
+                      tag: "Sugestões de IA",
+                      title: "Ideias novas com o tom da marca",
+                      desc: "A IA lê o posicionamento, público-alvo e objetivos do cliente para sugerir pautas prontas — com gancho, formato e data recomendados.",
+                      img: previewAI.url,
+                    },
+                  ]}
+                />
+              </div>
             </div>
           </section>
-
-          {/* Stacked feature cards (full-bleed) */}
-          <div className="-mx-6 mt-20 lg:-mx-16">
-            <HorizontalFeatures
-              features={[
-                {
-                  tag: "Calendário editorial",
-                  title: "Planeje o mês inteiro em uma visão só",
-                  desc: "Enxergue publicações, agendamentos e rascunhos por semana. Arraste para reagendar e mantenha o time alinhado com o cliente.",
-                  img: previewCalendar.url,
-                },
-                {
-                  tag: "Quadro de conteúdos",
-                  title: "Do rascunho ao publicado, sem fricção",
-                  desc: "Kanban com estágios de Ideia, Rascunho, Agendado e Publicado. Acompanhe o status de cada peça sem sair da tela.",
-                  img: previewBoard.url,
-                },
-                {
-                  tag: "Sugestões de IA",
-                  title: "Ideias novas com o tom da marca",
-                  desc: "A IA lê o posicionamento, público-alvo e objetivos do cliente para sugerir pautas prontas — com gancho, formato e data recomendados.",
-                  img: previewAI.url,
-                },
-              ]}
-            />
-          </div>
 
           {/* PLANOS */}
           <section id="planos" className="reveal mx-auto mt-32 max-w-6xl scroll-mt-24">
