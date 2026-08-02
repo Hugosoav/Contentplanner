@@ -13,11 +13,21 @@ import { toast } from "sonner";
 import { Loader2, Check, Menu } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import PlatformDeck from "@/components/PlatformDeck";
+import Scene3D from "@/components/Scene3D";
+import SectionNav from "@/components/SectionNav";
 import sincroLogoWhite from "@/assets/sincro-logo-white.png.asset.json";
 import sincroBgAurora from "@/assets/sincro-bg-aurora.png.asset.json";
 import previewCalendar from "@/assets/sincro-preview-calendar.png.asset.json";
 import previewBoard from "@/assets/sincro-preview-board.png.asset.json";
 import previewAI from "@/assets/sincro-preview-ai.png.asset.json";
+
+const SECTIONS = [
+  { id: "hero", label: "Início" },
+  { id: "sobre", label: "Sobre" },
+  { id: "plataforma", label: "Plataforma" },
+  { id: "planos", label: "Planos" },
+  { id: "faq", label: "FAQ" },
+];
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -107,10 +117,12 @@ const Auth = () => {
   }
 
   const navItems: { id: string; label: string }[] = [
-    { id: "faq", label: "FAQ" },
-    { id: "planos", label: "PLANOS" },
     { id: "sobre", label: "SOBRE" },
+    { id: "plataforma", label: "PLATAFORMA" },
+    { id: "planos", label: "PLANOS" },
+    { id: "faq", label: "FAQ" },
   ];
+
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -154,14 +166,15 @@ const Auth = () => {
 
   return (
     <div className="relative min-h-screen bg-black text-white">
+      <SectionNav sections={SECTIONS} />
       {/* HERO wrapper with aurora background */}
-      <div className="relative overflow-hidden">
+      <div id="hero" className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <img
           src={sincroBgAurora.url}
           alt=""
           aria-hidden
-          className="aurora-pan absolute inset-0 h-full w-full object-cover"
+          className="aurora-pan absolute inset-0 h-full w-full object-cover opacity-80"
         />
       </div>
       {/* Saturated color washes for extra punch */}
@@ -232,15 +245,15 @@ const Auth = () => {
 
       {/* HERO */}
       <main className="relative z-10 px-6 pb-32 pt-6 lg:px-16">
-          <section className="grid min-h-[calc(100vh-12rem)] grid-cols-1 items-center">
+          <section className="grid min-h-[calc(100vh-12rem)] grid-cols-1 items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
             <div className="max-w-3xl">
               <h1 className="font-heading text-5xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
                 Para gestores<br />
                 e criadores<br />
                 de conteúdo
               </h1>
-              <p className="mt-8 max-w-lg text-sm leading-relaxed text-white/70 sm:text-base">
-                Planejamento, criatividade, gestão e inteligência artificial trabalhando em perfeita sincronia para transformar ideias em conteúdo, conteúdo em estratégia e estratégia em resultados. Menos processos dispersos e mais clareza, velocidade e crescimento.
+              <p className="mt-8 max-w-md text-base leading-relaxed text-white/70">
+                Planejamento, criação e IA em perfeita sincronia.
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <Button
@@ -256,13 +269,24 @@ const Auth = () => {
                   Saiba mais →
                 </button>
               </div>
-              <div className="mt-16 flex items-center gap-2 text-white/40">
-                <span className="h-px w-8 bg-white/40" />
-                <span className="h-px w-8 bg-white/40" />
-                <span className="h-px w-8 bg-white/40" />
-              </div>
+            </div>
+
+            {/* Objeto 3D */}
+            <div className="relative h-[22rem] sm:h-[28rem] lg:h-[34rem]">
+              <Scene3D className="absolute inset-0 h-full w-full" />
             </div>
           </section>
+
+          {/* Indicador de scroll */}
+          <button
+            onClick={() => scrollTo("sobre")}
+            className="group mx-auto mt-4 flex flex-col items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-white/40 transition-colors hover:text-white"
+          >
+            Role
+            <span className="relative h-10 w-px overflow-hidden bg-white/20">
+              <span className="scroll-cue absolute inset-x-0 top-0 h-4 bg-[#f2540f]" />
+            </span>
+          </button>
       </main>
       </div>
 
@@ -289,8 +313,8 @@ const Auth = () => {
               <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
                 Sincronia entre <span className="text-gradient-brand">estratégia</span> e criação.
               </h2>
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/70">
-                A Sincro nasceu para resolver o caos do conteúdo. Reunimos planejamento, calendário editorial, banco de ideias e inteligência artificial em uma única plataforma — para que estrategistas, criadores e agências possam focar no que realmente importa: criar.
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-white/60">
+                Planejamento, calendário, banco de ideias e IA em uma única plataforma. Para você focar no que importa: criar.
               </p>
             </div>
 
@@ -300,35 +324,35 @@ const Auth = () => {
               <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
                 Feita para <span className="text-gradient-brand">agências</span> e <span className="text-gradient-brand">influenciadores</span>.
               </h3>
-              <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl">
-                  <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">Agências de marketing</span>
-                  <h4 className="mt-3 text-2xl font-semibold text-white">Gerencie múltiplas marcas sem se perder</h4>
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">
-                    Dashboards isolados por cliente, calendário editorial compartilhado com o time e sugestões de IA calibradas para cada posicionamento. Escale a operação sem multiplicar planilhas.
-                  </p>
-                  <ul className="mt-6 space-y-2 text-sm text-white/80">
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Múltiplos clientes em contas separadas</li>
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Fluxo de aprovação e status por conteúdo</li>
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Pautas geradas com base no briefing</li>
-                  </ul>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl">
-                  <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">Influenciadores e criadores</span>
-                  <h4 className="mt-3 text-2xl font-semibold text-white">Constância criativa sem travar no branco</h4>
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">
-                    Banco de ideias sempre cheio, calendário visual para nunca perder o ritmo e ganchos prontos para reels, carrosséis e stories. Mais criação, menos improviso.
-                  </p>
-                  <ul className="mt-6 space-y-2 text-sm text-white/80">
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Ideias organizadas por pilar de conteúdo</li>
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Sugestões de IA com tom de voz próprio</li>
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Calendário e quadro em uma tela só</li>
-                  </ul>
-                </div>
+              <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+                {[
+                  {
+                    tag: "Agências de marketing",
+                    title: "Múltiplas marcas, um só fluxo",
+                    desc: "Dashboards isolados por cliente e pautas geradas a partir do briefing.",
+                  },
+                  {
+                    tag: "Influenciadores e criadores",
+                    title: "Constância sem travar no branco",
+                    desc: "Banco de ideias sempre cheio e calendário visual para manter o ritmo.",
+                  },
+                ].map((c, i) => (
+                  <div
+                    key={c.tag}
+                    className="reveal group rounded-2xl border border-white/10 bg-white/[0.02] p-8 transition-all duration-500 hover:-translate-y-1 hover:border-[#f2540f]/50 hover:bg-white/[0.05]"
+                    style={{ transitionDelay: `${i * 90}ms` }}
+                  >
+                    <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">{c.tag}</span>
+                    <h4 className="mt-3 text-2xl font-semibold text-white">{c.title}</h4>
+                    <p className="mt-3 text-sm leading-relaxed text-white/55">{c.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
+          </section>
 
-            {/* Platform preview */}
+          {/* PLATAFORMA */}
+          <section id="plataforma" className="mx-auto mt-32 max-w-6xl scroll-mt-24">
             <div className="reveal">
               <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">A plataforma</span>
               <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
@@ -342,19 +366,19 @@ const Auth = () => {
                     {
                       tag: "Calendário editorial",
                       title: "Planeje o mês inteiro em uma visão só",
-                      desc: "Enxergue publicações, agendamentos e rascunhos por semana. Arraste para reagendar e mantenha o time alinhado com o cliente.",
+                      desc: "Publicações, agendamentos e rascunhos por semana — arraste para reagendar.",
                       img: previewCalendar.url,
                     },
                     {
                       tag: "Quadro de conteúdos",
                       title: "Do rascunho ao publicado, sem fricção",
-                      desc: "Kanban com estágios de Ideia, Rascunho, Agendado e Publicado. Acompanhe o status de cada peça sem sair da tela.",
+                      desc: "Kanban de Ideia a Publicado, com o status de cada peça na mesma tela.",
                       img: previewBoard.url,
                     },
                     {
                       tag: "Sugestões de IA",
                       title: "Ideias novas com o tom da marca",
-                      desc: "A IA lê o posicionamento, público-alvo e objetivos do cliente para sugerir pautas prontas — com gancho, formato e data recomendados.",
+                      desc: "Pautas prontas com gancho, formato e data, no posicionamento do cliente.",
                       img: previewAI.url,
                     },
                   ]}
@@ -370,10 +394,11 @@ const Auth = () => {
               Escolha o ritmo da<br />sua <span className="text-gradient-brand">operação</span>.
             </h2>
             <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-              {plans.map((p) => (
+              {plans.map((p, i) => (
                 <div
                   key={p.name}
-                  className={`relative rounded-2xl border p-8 backdrop-blur-xl ${p.highlight ? "border-[#f2540f]/60 bg-white/[0.06]" : "border-white/10 bg-white/[0.03]"}`}
+                  style={{ transitionDelay: `${i * 100}ms` }}
+                  className={`reveal relative rounded-2xl border p-8 transition-transform duration-500 hover:-translate-y-2 ${p.highlight ? "border-[#f2540f]/60 bg-white/[0.06]" : "border-white/10 bg-white/[0.03] hover:border-white/25"}`}
                 >
                   {p.highlight && (
                     <span className="absolute -top-3 left-6 rounded-full bg-gradient-brand px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-white">
