@@ -244,15 +244,15 @@ const Auth = () => {
 
       {/* HERO */}
       <main className="relative z-10 px-6 pb-32 pt-6 lg:px-16">
-          <section className="grid min-h-[calc(100vh-12rem)] grid-cols-1 items-center">
+          <section className="grid min-h-[calc(100vh-12rem)] grid-cols-1 items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
             <div className="max-w-3xl">
               <h1 className="font-heading text-5xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
                 Para gestores<br />
                 e criadores<br />
                 de conteúdo
               </h1>
-              <p className="mt-8 max-w-lg text-sm leading-relaxed text-white/70 sm:text-base">
-                Planejamento, criatividade, gestão e inteligência artificial trabalhando em perfeita sincronia para transformar ideias em conteúdo, conteúdo em estratégia e estratégia em resultados. Menos processos dispersos e mais clareza, velocidade e crescimento.
+              <p className="mt-8 max-w-md text-base leading-relaxed text-white/70">
+                Planejamento, criação e IA em perfeita sincronia.
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <Button
@@ -268,13 +268,24 @@ const Auth = () => {
                   Saiba mais →
                 </button>
               </div>
-              <div className="mt-16 flex items-center gap-2 text-white/40">
-                <span className="h-px w-8 bg-white/40" />
-                <span className="h-px w-8 bg-white/40" />
-                <span className="h-px w-8 bg-white/40" />
-              </div>
+            </div>
+
+            {/* Objeto 3D */}
+            <div className="relative h-[22rem] sm:h-[28rem] lg:h-[34rem]">
+              <Scene3D className="absolute inset-0 h-full w-full" />
             </div>
           </section>
+
+          {/* Indicador de scroll */}
+          <button
+            onClick={() => scrollTo("sobre")}
+            className="group mx-auto mt-4 flex flex-col items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-white/40 transition-colors hover:text-white"
+          >
+            Role
+            <span className="relative h-10 w-px overflow-hidden bg-white/20">
+              <span className="scroll-cue absolute inset-x-0 top-0 h-4 bg-[#f2540f]" />
+            </span>
+          </button>
       </main>
       </div>
 
