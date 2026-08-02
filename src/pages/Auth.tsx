@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import { Loader2, Check, Menu } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import PlatformDeck from "@/components/PlatformDeck";
+import Scene3D from "@/components/Scene3D";
+import SectionNav from "@/components/SectionNav";
 import sincroLogoWhite from "@/assets/sincro-logo-white.png.asset.json";
 import sincroBgAurora from "@/assets/sincro-bg-aurora.png.asset.json";
 import previewCalendar from "@/assets/sincro-preview-calendar.png.asset.json";
