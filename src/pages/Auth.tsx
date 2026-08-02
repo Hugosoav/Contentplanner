@@ -393,10 +393,11 @@ const Auth = () => {
               Escolha o ritmo da<br />sua <span className="text-gradient-brand">operação</span>.
             </h2>
             <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-              {plans.map((p) => (
+              {plans.map((p, i) => (
                 <div
                   key={p.name}
-                  className={`relative rounded-2xl border p-8 backdrop-blur-xl ${p.highlight ? "border-[#f2540f]/60 bg-white/[0.06]" : "border-white/10 bg-white/[0.03]"}`}
+                  style={{ transitionDelay: `${i * 100}ms` }}
+                  className={`reveal relative rounded-2xl border p-8 transition-transform duration-500 hover:-translate-y-2 ${p.highlight ? "border-[#f2540f]/60 bg-white/[0.06]" : "border-white/10 bg-white/[0.03] hover:border-white/25"}`}
                 >
                   {p.highlight && (
                     <span className="absolute -top-3 left-6 rounded-full bg-gradient-brand px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-white">
