@@ -21,6 +21,14 @@ import previewCalendar from "@/assets/sincro-preview-calendar.png.asset.json";
 import previewBoard from "@/assets/sincro-preview-board.png.asset.json";
 import previewAI from "@/assets/sincro-preview-ai.png.asset.json";
 
+const SECTIONS = [
+  { id: "hero", label: "Início" },
+  { id: "sobre", label: "Sobre" },
+  { id: "plataforma", label: "Plataforma" },
+  { id: "planos", label: "Planos" },
+  { id: "faq", label: "FAQ" },
+];
+
 const Auth = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -115,13 +123,6 @@ const Auth = () => {
     { id: "faq", label: "FAQ" },
   ];
 
-  const sections = [
-    { id: "hero", label: "Início" },
-    { id: "sobre", label: "Sobre" },
-    { id: "plataforma", label: "Plataforma" },
-    { id: "planos", label: "Planos" },
-    { id: "faq", label: "FAQ" },
-  ];
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -165,7 +166,7 @@ const Auth = () => {
 
   return (
     <div className="relative min-h-screen bg-black text-white">
-      <SectionNav sections={sections} />
+      <SectionNav sections={SECTIONS} />
       {/* HERO wrapper with aurora background */}
       <div id="hero" className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">

@@ -52,7 +52,7 @@ const Scene3D = ({ className = "" }: { className?: string }) => {
     <div className={`pointer-events-none ${className}`} aria-hidden>
       <Canvas
         dpr={[1, 1.8]}
-        camera={{ position: [0, 0, 6], fov: 45 }}
+        camera={{ position: [0, 0, 7.2], fov: 42 }}
         gl={{ antialias: true, alpha: true }}
       >
         <Suspense fallback={null}>
@@ -62,6 +62,7 @@ const Scene3D = ({ className = "" }: { className?: string }) => {
           <pointLight position={[3, -3, -4]} intensity={10} color="#ffd9a0" />
 
           <ScrollRig>
+            <group scale={0.92}>
             <Float speed={1.1} rotationIntensity={0.5} floatIntensity={0.9}>
               <Blob />
             </Float>
@@ -83,6 +84,7 @@ const Scene3D = ({ className = "" }: { className?: string }) => {
                 <meshStandardMaterial color="#fff1e0" metalness={0.6} roughness={0.2} />
               </Icosahedron>
             </Float>
+            </group>
           </ScrollRig>
         </Suspense>
       </Canvas>
