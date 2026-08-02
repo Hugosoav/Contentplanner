@@ -109,9 +109,18 @@ const Auth = () => {
   }
 
   const navItems: { id: string; label: string }[] = [
-    { id: "faq", label: "FAQ" },
-    { id: "planos", label: "PLANOS" },
     { id: "sobre", label: "SOBRE" },
+    { id: "plataforma", label: "PLATAFORMA" },
+    { id: "planos", label: "PLANOS" },
+    { id: "faq", label: "FAQ" },
+  ];
+
+  const sections = [
+    { id: "hero", label: "Início" },
+    { id: "sobre", label: "Sobre" },
+    { id: "plataforma", label: "Plataforma" },
+    { id: "planos", label: "Planos" },
+    { id: "faq", label: "FAQ" },
   ];
 
   const scrollTo = (id: string) => {
@@ -156,14 +165,15 @@ const Auth = () => {
 
   return (
     <div className="relative min-h-screen bg-black text-white">
+      <SectionNav sections={sections} />
       {/* HERO wrapper with aurora background */}
-      <div className="relative overflow-hidden">
+      <div id="hero" className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <img
           src={sincroBgAurora.url}
           alt=""
           aria-hidden
-          className="aurora-pan absolute inset-0 h-full w-full object-cover"
+          className="aurora-pan absolute inset-0 h-full w-full object-cover opacity-80"
         />
       </div>
       {/* Saturated color washes for extra punch */}
