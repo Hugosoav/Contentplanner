@@ -312,8 +312,8 @@ const Auth = () => {
               <h2 className="mt-4 font-heading text-4xl font-bold uppercase leading-tight text-white sm:text-5xl">
                 Sincronia entre <span className="text-gradient-brand">estratégia</span> e criação.
               </h2>
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/70">
-                A Sincro nasceu para resolver o caos do conteúdo. Reunimos planejamento, calendário editorial, banco de ideias e inteligência artificial em uma única plataforma — para que estrategistas, criadores e agências possam focar no que realmente importa: criar.
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-white/60">
+                Planejamento, calendário, banco de ideias e IA em uma única plataforma. Para você focar no que importa: criar.
               </p>
             </div>
 
@@ -323,35 +323,35 @@ const Auth = () => {
               <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
                 Feita para <span className="text-gradient-brand">agências</span> e <span className="text-gradient-brand">influenciadores</span>.
               </h3>
-              <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl">
-                  <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">Agências de marketing</span>
-                  <h4 className="mt-3 text-2xl font-semibold text-white">Gerencie múltiplas marcas sem se perder</h4>
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">
-                    Dashboards isolados por cliente, calendário editorial compartilhado com o time e sugestões de IA calibradas para cada posicionamento. Escale a operação sem multiplicar planilhas.
-                  </p>
-                  <ul className="mt-6 space-y-2 text-sm text-white/80">
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Múltiplos clientes em contas separadas</li>
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Fluxo de aprovação e status por conteúdo</li>
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Pautas geradas com base no briefing</li>
-                  </ul>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl">
-                  <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">Influenciadores e criadores</span>
-                  <h4 className="mt-3 text-2xl font-semibold text-white">Constância criativa sem travar no branco</h4>
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">
-                    Banco de ideias sempre cheio, calendário visual para nunca perder o ritmo e ganchos prontos para reels, carrosséis e stories. Mais criação, menos improviso.
-                  </p>
-                  <ul className="mt-6 space-y-2 text-sm text-white/80">
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Ideias organizadas por pilar de conteúdo</li>
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Sugestões de IA com tom de voz próprio</li>
-                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 text-[#f2540f]" />Calendário e quadro em uma tela só</li>
-                  </ul>
-                </div>
+              <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+                {[
+                  {
+                    tag: "Agências de marketing",
+                    title: "Múltiplas marcas, um só fluxo",
+                    desc: "Dashboards isolados por cliente e pautas geradas a partir do briefing.",
+                  },
+                  {
+                    tag: "Influenciadores e criadores",
+                    title: "Constância sem travar no branco",
+                    desc: "Banco de ideias sempre cheio e calendário visual para manter o ritmo.",
+                  },
+                ].map((c, i) => (
+                  <div
+                    key={c.tag}
+                    className="reveal group rounded-2xl border border-white/10 bg-white/[0.02] p-8 transition-all duration-500 hover:-translate-y-1 hover:border-[#f2540f]/50 hover:bg-white/[0.05]"
+                    style={{ transitionDelay: `${i * 90}ms` }}
+                  >
+                    <span className="text-[11px] uppercase tracking-[0.3em] text-[#f2540f]">{c.tag}</span>
+                    <h4 className="mt-3 text-2xl font-semibold text-white">{c.title}</h4>
+                    <p className="mt-3 text-sm leading-relaxed text-white/55">{c.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
+          </section>
 
-            {/* Platform preview */}
+          {/* PLATAFORMA */}
+          <section id="plataforma" className="mx-auto mt-32 max-w-6xl scroll-mt-24">
             <div className="reveal">
               <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">A plataforma</span>
               <h3 className="mt-4 font-heading text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
@@ -365,19 +365,19 @@ const Auth = () => {
                     {
                       tag: "Calendário editorial",
                       title: "Planeje o mês inteiro em uma visão só",
-                      desc: "Enxergue publicações, agendamentos e rascunhos por semana. Arraste para reagendar e mantenha o time alinhado com o cliente.",
+                      desc: "Publicações, agendamentos e rascunhos por semana — arraste para reagendar.",
                       img: previewCalendar.url,
                     },
                     {
                       tag: "Quadro de conteúdos",
                       title: "Do rascunho ao publicado, sem fricção",
-                      desc: "Kanban com estágios de Ideia, Rascunho, Agendado e Publicado. Acompanhe o status de cada peça sem sair da tela.",
+                      desc: "Kanban de Ideia a Publicado, com o status de cada peça na mesma tela.",
                       img: previewBoard.url,
                     },
                     {
                       tag: "Sugestões de IA",
                       title: "Ideias novas com o tom da marca",
-                      desc: "A IA lê o posicionamento, público-alvo e objetivos do cliente para sugerir pautas prontas — com gancho, formato e data recomendados.",
+                      desc: "Pautas prontas com gancho, formato e data, no posicionamento do cliente.",
                       img: previewAI.url,
                     },
                   ]}
