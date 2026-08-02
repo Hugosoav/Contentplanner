@@ -161,15 +161,27 @@
   /* Scroll reveal */
   .reveal {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(36px);
+    filter: blur(6px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 1.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease, background-color 0.5s ease;
     will-change: opacity, transform;
   }
   .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
+  }
+  /* Indicador de scroll do hero */
+  .scroll-cue {
+    animation: scroll-cue 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+  @keyframes scroll-cue {
+    0%   { transform: translateY(-100%); }
+    100% { transform: translateY(250%); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
+    .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+    .scroll-cue { animation: none; }
   }
 }
